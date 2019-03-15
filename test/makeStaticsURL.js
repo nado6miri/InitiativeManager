@@ -4,6 +4,9 @@ var lgldap = require('../javascripts/lgeldap.js')
 
 moment.tz.setDefault("Asiz/Seoul");
 
+// HDD Disk
+const JSON_Path = '/media/sdet/3dd31023-a774-4f18-a813-0789b15061db/Initiativemgr_JSON/';
+
 function Test_Function()
 {
   let exeflag = true;
@@ -15,7 +18,7 @@ function Test_Function()
     console.log(index + ': ' + val);
   });
   */
-  initiativemgr.makeSnapshot_StaticsURL('/tmp/Initiativemgr_JSON/webOS50_SEETV_filter_45938/initiative_DB_filterID_KeyListOnly_45938_2019-03-15T10-38-35.json');
+  initiativemgr.makeSnapshot_StaticsURL(JSON_Path + 'webOS50_SEETV_filter_45938/initiative_DB_filterID_KeyListOnly_45938_2019-03-15T10-38-35.json');
 }  
 
 Test_Function();

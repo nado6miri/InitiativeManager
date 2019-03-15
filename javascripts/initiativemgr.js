@@ -524,8 +524,9 @@ var get_errors =
    's_zephyr_exeinfo' : [ ], 
 };
 
-
-
+// HDD Disk
+const JSON_Path = '/media/sdet/3dd31023-a774-4f18-a813-0789b15061db/Initiativemgr_JSON/';
+// const JSON_Path = "/tmp/Initiativemgr_JSON/" 
 /*
 make statics / url function
 */
@@ -564,7 +565,7 @@ async function makeSnapshot_StaticsURL(filename)
   Save_JSON_file(initiative_DB, "./public/json/initiative_DB_"+filterID+"_Latest.json");
   console.log("[final-Zephyr] Save end : initiative_DB");
   Save_JSON_file(developerslist, "./public/json/developers.json");
-  Save_JSON_file(developerslist, "/tmp/Initiativemgr_JSON/developers.json");
+  Save_JSON_file(developerslist, JSON_Path + "developers.json");
 
   end = moment().locale('ko');
   let elapsed = (end - start)/(1000*60);
@@ -599,17 +600,17 @@ async function makeSnapshot_InitiativeListfromJira(querymode, filterID, withChgl
   var foldername = "";
   switch(filterID)
   {
-    case "46117" :
-      foldername = "webOS45_MR_Major_filter_" + filterID;
+    case 46117 :
+      foldername = "webOS45_MR_Major_filter_" + String(filterID);
       break;
-    case "46093" :
-      foldername = "webOS45_MR_Minor_filter_" + filterID;
+    case 46093 :
+      foldername = "webOS45_MR_Minor_filter_" + String(filterID);
       break;
-    case "45402" :
-      foldername = "webOS50_Initial_filter_" + filterID;
+    case 45402 :
+      foldername = "webOS50_Initial_filter_" + String(filterID);
       break;
-    case "45938" :
-      foldername = "webOS50_SEETV_filter_" + filterID;
+    case 45938 :
+      foldername = "webOS50_SEETV_filter_" + String(filterID);
       break;
     default :
       foldername = "";
@@ -641,7 +642,7 @@ async function makeSnapshot_InitiativeListfromJira(querymode, filterID, withChgl
   // 4. 구성된 Initiative DB를 File로 저장한다.
   console.log("[final] Save file = initiative_DB");
   //Save_JSON_file(initiative_DB, "./public/json/initiative_DB_"+initiative_DB['snapshotDate']+".json");
-  Save_JSON_file(initiative_DB, "/tmp/Initiativemgr_JSON/" + foldername + "/initiative_DB_"+initiative_DB['snapshotDate']+".json");
+  Save_JSON_file(initiative_DB, JSON_Path + foldername + "/initiative_DB_"+initiative_DB['snapshotDate']+".json");
   console.log("[final] Save end : initiative_DB");
 
   // 5. Error가 발생되었다면 Error list를 file로 저장한다. 
@@ -657,11 +658,11 @@ async function makeSnapshot_InitiativeListfromJira(querymode, filterID, withChgl
   console.log("[final-Zephyr] Save file = initiative_DB");
 
   // 8. 최종 정보를 Snapshot 일자, Latest 2가지 형태의 file로 저장한다. 
-  Save_JSON_file(initiative_DB, "/tmp/Initiativemgr_JSON/" + foldername + "/initiative_DB_"+initiative_DB['snapshotDate']+".json");
+  Save_JSON_file(initiative_DB, JSON_Path + foldername + "/initiative_DB_"+initiative_DB['snapshotDate']+".json");
   Save_JSON_file(initiative_DB, "./public/json/initiative_DB_"+filterID+"_Latest.json");
   console.log("[final-Zephyr] Save end : initiative_DB");
   Save_JSON_file(developerslist, "./public/json/developers.json");
-  Save_JSON_file(developerslist, "/tmp/Initiativemgr_JSON/developers.json");
+  Save_JSON_file(developerslist, JSON_Path + "developers.json");
   
   end = moment().locale('ko');
   let elapsed = (end - start)/(1000*60);
