@@ -1,0 +1,207 @@
+<style>
+    .tb_default {
+        width: 1100px;
+        border: 1px solid;
+    }
+</style>
+
+<html>
+  <head>
+  <title></title>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+      <b>Send message</b><p>
+      Message  <input type="text" id="msgbox"/>
+      <br>
+      <div id="workflow" style = "position:relative;">
+        <img src="http://10.186.115.57:3000/images/workflow.png" width="800", hieght="600"></img>
+        <div class="linkarea" style="top: 30px; left: 0px; width: 30px; height: 30px; cursor: pointer; position:absolute;" clicklink="http://www.naver.com">###</div>
+        <div class="linkarea" style="top: 30px; left: 300px; width: 30px; height: 30px; cursor: pointer; position:absolute;" clicklink="http://www.naver.com">###</div>
+      </div>
+      <span id="msgs"></span>
+      <div id ="workflowstatus"></div>
+      <div id="initiative_org"></div>
+      <div id="initiativelist"></div>
+      <div id="hiddendata"></div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    var initiativeStatusList = ["Drafting", "PO Review", "ELT Review", "Approved", "Backlog Refinement", "Ready", "In Progress", "Delivered", "Total"];
+	var groupLeader = { "TV SW Platform개발실" : "이강원", "TV SW Service&App개발실" : "공용택","HE선행개발실" : "김효성","TV제품개발실" : "장석호",
+                		"TV SW Engineering실" : "김익환", "TV화질/음질개발실" : "강석판", "HE개발기획실" : "최병도" };
+
+    // http://156.147.69.33:8081/wbs/ProcedureInfo2.do?sp=SP_WEBOS_INITIATIVE_HISTORY_LIST
+    var data = [
+        {"group":"TV SW Platform개발실","Drafting":"0","diff_Drafting":"0","Approved":"0","diff_Approved":"0","PO Review":"0","diff_PO Review":"0","ELT Review":"2","diff_ELT Review":"0","Ready":"0","diff_Ready":"0","In Progress":"7","diff_In Progress":"-2","Delivered":"50","diff_Delivered":"2","Backlog Refinement":"1","diff_Backlog Refinement":"0","Total":"60","diff_Total":"0","sort":"1"},    
+        {"group":"TV SW Service&App개발실","Drafting":"0","diff_Drafting":"0","Approved":"0","diff_Approved":"0","PO Review":"0","diff_PO Review":"0","ELT Review":"2","diff_ELT Review":"0","Ready":"0","diff_Ready":"0","In Progress":"7","diff_In Progress":"-2","Delivered":"50","diff_Delivered":"2","Backlog Refinement":"1","diff_Backlog Refinement":"0","Total":"60","diff_Total":"0","sort":"1"},    
+        {"group":"HE선행개발실","Drafting":"0","diff_Drafting":"0","Approved":"0","diff_Approved":"0","PO Review":"0","diff_PO Review":"0","ELT Review":"2","diff_ELT Review":"0","Ready":"0","diff_Ready":"0","In Progress":"7","diff_In Progress":"-2","Delivered":"50","diff_Delivered":"2","Backlog Refinement":"1","diff_Backlog Refinement":"0","Total":"60","diff_Total":"0","sort":"1"},    
+        {"group":"TV제품개발실","Drafting":"0","diff_Drafting":"0","Approved":"0","diff_Approved":"0","PO Review":"0","diff_PO Review":"0","ELT Review":"2","diff_ELT Review":"0","Ready":"0","diff_Ready":"0","In Progress":"7","diff_In Progress":"-2","Delivered":"50","diff_Delivered":"2","Backlog Refinement":"1","diff_Backlog Refinement":"0","Total":"60","diff_Total":"0","sort":"1"},    
+        {"group":"TV SW Engineering실","Drafting":"0","diff_Drafting":"0","Approved":"0","diff_Approved":"0","PO Review":"0","diff_PO Review":"0","ELT Review":"2","diff_ELT Review":"0","Ready":"0","diff_Ready":"0","In Progress":"7","diff_In Progress":"-2","Delivered":"50","diff_Delivered":"2","Backlog Refinement":"1","diff_Backlog Refinement":"0","Total":"60","diff_Total":"0","sort":"1"},    
+        {"group":"TV화질/음질개발실","Drafting":"0","diff_Drafting":"0","Approved":"0","diff_Approved":"0","PO Review":"0","diff_PO Review":"0","ELT Review":"2","diff_ELT Review":"0","Ready":"0","diff_Ready":"0","In Progress":"7","diff_In Progress":"-2","Delivered":"50","diff_Delivered":"2","Backlog Refinement":"1","diff_Backlog Refinement":"0","Total":"60","diff_Total":"0","sort":"1"},    
+        {"group":"HE개발기획실","Drafting":"0","diff_Drafting":"0","Approved":"0","diff_Approved":"0","PO Review":"0","diff_PO Review":"0","ELT Review":"2","diff_ELT Review":"0","Ready":"0","diff_Ready":"0","In Progress":"7","diff_In Progress":"-2","Delivered":"50","diff_Delivered":"2","Backlog Refinement":"1","diff_Backlog Refinement":"0","Total":"60","diff_Total":"0","sort":"1"}    
+    ];
+    var socket = null;
+
+    $(document).ready(function() {
+        //setDivLinks();
+        open_socketcomm();
+        initiative_organization(data);
+        socket.emit('initiative_lists',{ msg : "all" });
+    });
+
+    function open_socketcomm()
+    {
+        if(socket == null)
+        {
+            console.log("open socket to communicate with server and install event handler....");
+            //https://javafa.gitbooks.io/nodejs_server_basic/content/chapter10.html
+            socket = io.connect('http://10.186.115.57:5555');
+            // send operation
+            $("#msgbox").keyup(function(event) {
+            if (event.which == 13) {
+                // send event with 'fromclientpublic' message ID 
+                socket.emit('clientcmd',{msg:$('#msgbox').val()});
+                $('#msgbox').val('');
+                }
+            });
+
+            // receive event with 'toclient' message ID 
+            socket.on('toclient',function(data){
+                console.log(data.msg);
+                $('#msgs').append(data.msg+'<BR>');
+            });
+
+            socket.on('initiative_lists',function(data){
+                var jsondata = JSON.stringify(data);
+                console.log("[****************************]");
+                console.log(JSON.stringify(data));
+                display_initiative(JSON.parse(jsondata));
+            });
+        }
+        else
+        {
+            console.log("Already opened socket exist");
+        }
+    }
+
+
+    function setDivLinks()
+    {
+        $('div.linkarea').each(function(){
+            let link = $(this).attr("clicklink");
+            if(link != undefined && link != "")
+            {
+                $(this).css("cursor", "pointer").click(function(){
+                    window.open($(this).attr("clicklink"));
+                })
+            }
+        });
+    }
+
+
+    function display_initiative(data) 
+    {
+        var header1 = ["No", "Type", "Key", "Summary", "Assignee", "DueDate", "Status"];
+        $("#hiddendata").hide();
+        document.getElementById("hiddendata").innerHTML = JSON.stringify(data);
+        jsondata = data;
+
+        table = $('#static_summary_table').empty(); // .remove()
+        $('#static_summary_table').append(table);				
+
+        var table = $('<table width=100% border=1 cellpadding=0 cellspacing=0 style="border-collapse:collapse"></table>');
+        table.attr('id', 'tb_initiative_list');
+        $('#initiativelist').append(table);				
+
+        for (index in header1) {
+            table.append($('<th>').html(header1[index]))
+        }
+
+        for (i = 0; i < jsondata.total; i++) {
+            var no = i + 1;
+            var type = "Initiative";
+            var key = jsondata["issues"][i]["key"];
+            var summary = jsondata["issues"][i]["fields"]["summary"];
+            var status = jsondata["issues"][i]["fields"]["status"]["name"];
+            var assignee = jsondata["issues"][i]["fields"]["assignee"]["displayName"];
+            assignee = assignee.substring(0, assignee.indexOf(' '));
+            var due = jsondata["issues"][i]["fields"]["due"];
+
+            var tr = $('<tr>');
+            table.append(tr);
+            $(tr).append($('<td>').html(no));
+            $(tr).append($('<td>').html(type));
+            $(tr).append($('<td>').html('<a href="http://hlm.lge.com/issue/browse/' + key + '" target="_blank">' + key + '</a>'));
+            $(tr).append($('<td>').html('<a href="http://hlm.lge.com/issue/browse/' + key + '" target="_blank">' + summary + '</a>'));
+            $(tr).append($('<td>').html(assignee));
+            $(tr).append($('<td>').html(due));
+            $(tr).append($('<td>').html(status));
+        }
+    }
+
+    function initiative_organization(orgInfo)
+    {
+        var table = $('<table width=100% border=1 cellpadding=0 cellspacing=0 style="border-collapse:collapse"></table>');
+        table.attr('id', 'tb_initiative_status');
+        $('#workflowstatus').append(table);				
+        table.append($('<thead>')
+                 .append($('<tr>')
+                    .append($('<th>').text('조직'))
+                )
+            );
+
+        initiativeStatusList.forEach(function(value, index) {
+            $('#tb_initiative_status tr:first th:last').after('<th>' + value + '</th>');
+        });
+
+        table.append('<tbody>');
+        $.each(orgInfo, function(index, jsondata) {
+            console.log("index=", index, " jsondata=", jsondata);
+            $('#tb_initiative_status tbody').append('<tr>');
+            $('#tb_initiative_status tbody tr:last').append('<td>' + jsondata['group'] + '</td>');
+            initiativeStatusList.forEach(function(value, inx) {
+                var diff_value = 'diff_' + value;
+                $('#tb_initiative_status tbody tr:last td:last').after('<td>' + makeInitiativeJiraIssueLink(jsondata['group'], value, jsondata[value]) + '(' + jsondata[diff_value] + ')</td>');
+            });	
+        });
+        $('#tb_initiative_status thead tr th').css({"text-align":"center", "background-color":"#F0F0F0" });
+        $('#tb_initiative_status tbody tr td').css({"text-align":"center"});
+        $('#tb_initiative_status tbody tr:last td').css({"text-align":"center", "background-color":"#F0F0F0" });
+    }
+
+
+    function makeInitiativeJiraIssueLink(group, status, issueCnt) 
+    {
+		var filter = 'project = TVPLAT and issuetype = Initiative and fixVersion = "webOS TV 4.5 Initial"';
+		if(status != 'Total') {
+			filter += ' and status = "' + status + '"';
+		} else {
+			filter += ' and status not in (deferred, closed) ';
+		}
+
+		if(group == "담당자미지정") {
+			filter += ' and assignee is EMPTY ';
+		} else if(group == "TV연구소 이외 조직") {
+			filter += ' and not ( ';
+			$.each(groupLeader, function(inx, v) {
+				var groupName = inx + '_' + v;
+				filter += ' assignee in membersOf("' + groupName + '") or ';
+			});
+			filter = filter.substring(0, filter.length -3);
+			filter += ')';
+		} else if(group == "Total") {
+
+		} else  {
+			filter += ' and assignee in membersOf("' + group + '_' + groupLeader[group] + '")';			
+		}
+
+        var result = '<a href="http://hlm.lge.com/issue/issues/?jql=' + encodeURIComponent(filter) + '" target="_blank">' + issueCnt + '</a>';
+
+		return result;
+	}
+</script>

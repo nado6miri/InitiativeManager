@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <b>Donation : Small Round</b>
+    <div id="sminfo_div">
+        <span id=msgs></span>
+        <table id="donate_list" border="1">
+            <thead>
+            <th>Round No</th>
+            <th>Order</th>
+            <th>Time</th>
+            <th>Donator</th>
+            <th>Amount</th>
+            <th>SYM</th>
+            <th>Lucky Code</th>
+            <th>TxID</th>
+            </thead>
+            <tbody id="insert_sminfo_table">
+                <tr><td>S00001</td><td>1</td><td>2018/10/15-09:00:34</td><td>iloveyoutube</td><td>1</td><td>EOS</td><td>55</td><td>7893...2344</td></tr>
+                <tr><td>S00001</td><td>2</td><td>2018/10/15-09:00:35</td><td>ilovelgtwins</td><td>100</td><td>GOLD</td><td>35</td><td>3293...2233</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <b>Send message</b>
+        <p>Message  <input type="text" id="cmdbox" />
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    //var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('http://10.186.115.57:5555');
+
+    socket.on('insert_last', function (data) {
+        console.log("Insert Table");
+        $('#msgs').text(data.msg + '==Insert Table');
+        $('#donate_list > tbody:last').append('<tr><td>Last</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
+    });
+
+    socket.on('insert_first', function (data) {
+        console.log("Insert Table");
+        $('#msgs').text(data.msg + '==Insert Table');
+        $('#donate_list > thead').append('<tr><td>First</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
+    });
+
+    //===========================================================
+    $("#cmdbox").keyup(function (event) {
+        if (event.which == 13) {
+            socket.emit('clientcmd', { msg: $('#cmdbox').val() });
+            $('#cmdbox').val('');
+        }
+    });
+</script>
+
+<!--
+   scrollable table....
+   https://medium.com/@vembarrajan/html-css-tricks-scroll-able-table-body-tbody-d23182ae0fbc
+-->
