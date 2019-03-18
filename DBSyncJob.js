@@ -130,20 +130,22 @@ var fs = require('fs');
 var fse = require('fs-extra');
 var mongoose = require('mongoose');
 var sleep = require('sleep');
+var moment = require('moment-timezone')
+moment.tz.setDefault("Asiz/Seoul");
 
 var initiative_DB = {};
 
 var InitMgr_webOS45_MR_Minor_DB = require('./models/initiative_webOS45_MR_Minor');
-const InitMgr_webOS45_MR_Minor_filename = './public/json/initiative_DB_46093_Latest.json';
+const InitMgr_webOS45_MR_Minor_filename = '/home/sdet/sdetshare/workspace/InitiativeManager/public/json/initiative_DB_46093_Latest.json';
 
 var InitMgr_webOS45_MR_Major_DB = require('./models/initiative_webOS45_MR_Major');
-const InitMgr_webOS45_MR_Major_filename = './public/json/initiative_DB_46117_Latest.json';
+const InitMgr_webOS45_MR_Major_filename = '/home/sdet/sdetshare/workspace/InitiativeManager/public/json/initiative_DB_46117_Latest.json';
 
 var InitMgr_webOS50_SEETV_DB = require('./models/initiative_webOS50_SEETV');
-const InitMgr_webOS50_SEETV_filename = './public/json/initiative_DB_45938_Latest.json';
+const InitMgr_webOS50_SEETV_filename = '/home/sdet/sdetshare/workspace/InitiativeManager/public/json/initiative_DB_45938_Latest.json';
 
 var InitMgr_webOS50_Initial_DB = require('./models/initiative_webOS50_Initial');
-const InitMgr_webOS50_Initial_filename = './public/json/initiative_DB_45402_Latest.json';
+const InitMgr_webOS50_Initial_filename = '/home/sdet/sdetshare/workspace/InitiativeManager/public/json/initiative_DB_45402_Latest.json';
 
 const databaseUrl = 'mongodb://initiativemgr:initiativemgr@127.0.0.1:27017/admin';
 const accessDB = "initiativemgr";
@@ -163,7 +165,7 @@ function mongo_connectDB(db_url, accessDBName)
       console.log("connect to database successfully");
     });
     database.on('disconnected', () => {
-      console.log("disconnected to database, after 5sec reconnect to DB");
+      console.log("disconnected to database...");
     });
 }
 
@@ -178,7 +180,6 @@ async function DB_Sync_PeriodicJob()
     initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS45_MR_Minor', json: initiative_DB };
     await InitMgr_webOS45_MR_Minor_DB.insert(initiative_doc);
 
-/*
     initiative_DB = await load_InitiativeDB(InitMgr_webOS45_MR_Major_filename);
     initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS45_MR_Major', json: initiative_DB };
     await InitMgr_webOS45_MR_Major_DB.insert(initiative_doc);
@@ -190,7 +191,6 @@ async function DB_Sync_PeriodicJob()
     initiative_DB = await load_InitiativeDB(InitMgr_webOS50_Initial_filename);
     initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS50_Initial', json: initiative_DB };
     await InitMgr_webOS50_Initial_DB.insert(initiative_doc);
-*/
     
     mongoose.disconnect();
     /*

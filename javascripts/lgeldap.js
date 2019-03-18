@@ -66,7 +66,7 @@ function getLDAP_InfoTest(username)
 }
 
 
-const exceptionlist = ['Unassigned', 'null', 'stan.kim', 'buyoung.yun', 'juneyoung.jung', 'hyokak.kim', 's2.kim', 'heekyoung.seo', 'lgyoungjun.kim' ];
+const exceptionlist = ['Unassigned', 'null', 'stan.kim', 'buyoung.yun', 'juneyoung.jung', 'hyokak.kim', 's2.kim', 'heekyoung.seo', 'lgyoungjun.kim', 'jaehak.lee' ];
 
 
 function getLDAP_Info(username)
@@ -115,7 +115,9 @@ function getLDAP_Info(username)
             console.log('ldap connected - Searching..... = ', username);
               search.on('searchEntry', function(entry) {
                 if(entry.object){
-                  resolve(entry.object);
+                  let result = entry.object;
+                  result['department'] = result['department'].replace('.', '');
+                  resolve(result);
                 }
                 else{
                   console.log("Can't find User..............")

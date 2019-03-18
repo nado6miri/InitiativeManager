@@ -15,7 +15,7 @@ async function Test_Function()
   });
   */
 
-  initiativemgr.makeSnapshot_InitiativeListfromJira("keyID", "TVPLAT-16376", true);   // test KEY
+  initiativemgr.makeSnapshot_InitiativeListfromJira("keyID", "TVPLAT-19666", true);   // test KEY
 
   //lgldap.getLDAP_Info('stan.kim').then((result) => { console.log("Department = ", result)});  
   /*

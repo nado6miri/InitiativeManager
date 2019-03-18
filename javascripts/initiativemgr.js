@@ -624,7 +624,7 @@ async function makeSnapshot_InitiativeListfromJira(querymode, filterID, withChgl
 
   // 2.Initiative Key List 구성 (상세정보 필요 없음)
   try{
-    var initiativelist = await initiative_jiraquery.get_InitiativeListfromJira(querymode, filterID, withChglog);
+    var initiativelist = await initiative_jiraquery.get_InitiativeListfromJira(querymode, filterID, false);
     initiative_DB['total'] = initiativelist.total;
     for (var i = 0; i < initiativelist.total; i++) { initiative_keylist.push(initiativelist['issues'][i]['key']); }     
   }
