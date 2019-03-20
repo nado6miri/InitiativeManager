@@ -147,6 +147,9 @@ const InitMgr_webOS50_SEETV_filename = '/home/sdet/sdetshare/workspace/Initiativ
 var InitMgr_webOS50_Initial_DB = require('./models/initiative_webOS50_Initial');
 const InitMgr_webOS50_Initial_filename = '/home/sdet/sdetshare/workspace/InitiativeManager/public/json/initiative_DB_45402_Latest.json';
 
+var InitMgr_webOS50_Platform_DB = require('./models/initiative_webOS50_Platform');
+const InitMgr_webOS50_Platform_filename = '/home/sdet/sdetshare/workspace/InitiativeManager/public/json/initiative_DB_48233_Latest.json';
+
 const databaseUrl = 'mongodb://initiativemgr:initiativemgr@127.0.0.1:27017/admin';
 const accessDB = "initiativemgr";
 
@@ -192,6 +195,10 @@ async function DB_Sync_PeriodicJob()
     initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS50_Initial', json: initiative_DB };
     await InitMgr_webOS50_Initial_DB.insert(initiative_doc);
     
+    initiative_DB = await load_InitiativeDB(InitMgr_webOS50_Platform_filename);
+    initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS50_Platform', json: initiative_DB };
+    await InitMgr_webOS50_Platform_DB.insert(initiative_doc);
+
     mongoose.disconnect();
     /*
     // 2. Read

@@ -34,7 +34,11 @@ router.get('/:id', function(req, res, next) {
       console.log("req.params.id == webOS5.0_Initial");
       filename = "initiative_DB_45402_Latest.json"
       break;
-    case "SEETV" :
+    case "webOS5.0_Platform" :
+      console.log("req.params.id == webOS5.0_Platform");
+      filename = "initiative_DB_48233_Latest.json"
+      break;
+      case "SEETV" :
       console.log("req.params.id == SEETV");
       filename = "initiative_DB_45938_Latest.json"
       break;

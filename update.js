@@ -34,6 +34,10 @@ function update_function()
       console.log("req.params.id == webOS5.0_Initial");
       filterID = 45402;
       break;
+    case "webOS5.0_Platform" :
+      console.log("req.params.id == webOS5.0_Platform");
+      filterID = 48233;
+      break;
     case "SEETV" :
       console.log("req.params.id == SEETV");
       filterID = 45938;

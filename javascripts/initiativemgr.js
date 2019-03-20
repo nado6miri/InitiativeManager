@@ -612,6 +612,9 @@ async function makeSnapshot_InitiativeListfromJira(querymode, filterID, withChgl
     case 45938 :
       foldername = "webOS50_SEETV_filter_" + String(filterID);
       break;
+    case 48233 :
+      foldername = "webOS50_Platform_filter_" + String(filterID);
+      break;
     default :
       foldername = "";
       break;
@@ -934,9 +937,14 @@ async function makeSnapshot_ArchiReviewInfofromJira(init_index, init_keyvalue, e
           */
           let target = initparse.conversionSprintToDate(init_ReleaseSP);
           let today = moment().locale('ko');
+
+          let deadline_min = 28, deadline_max = 42;
+          if(labelstring.includes("단기과제")) { deadline_min = 14, deadline_max = 21; }
           let diff = initparse.getRemainDays(target, today);
-          if(diff <= 28 && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'RED'; }
-          if((diff > 28 && diff <= 42) && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'YELLOW'; }
+          if(diff <= deadline_min && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'RED'; }
+          if((diff > deadline_min && diff <= deadline_max) && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'YELLOW'; }
+
+          if(labelstring.includes("일정사전합의")) { color = 'YELLOW'; }
         }
         current_Arch_1st_workflow['Signal'] = color;
       }
@@ -994,18 +1002,23 @@ async function makeSnapshot_ArchiReviewInfofromJira(init_index, init_keyvalue, e
         let today = moment().locale('ko');
         let diff = initparse.getRemainDays(target, today);
         let color = 'GREEN';
+
+        let deadline_max = 42;
+        let labelstring = initiative_DB['issues'][init_index]['Labels'].join();
+        if(labelstring.includes("단기과제")) { deadline_max = 21; }
+
         // [RED Case]
         if(reviewkey == "Interface Review" || reviewkey == "Document Review")
         {
-          if(diff <= 42 && arch_curstorystatus != "Closed") { color = "RED"; } 
+          if(diff <= deadline_max && arch_curstorystatus != "Closed") { color = "RED"; } 
         }
         if((arch_epicstatus == "Delivered" || arch_epicstatus == 'Closed') && (arch_curstorystatus != "Closed")) { color = "RED"; }
         if(reviewkey == "Architecture Review" || reviewkey == "FMEA Review")
         {
-          if(diff <= 42 && (arch_curstorystatus != "Verify" && arch_curstorystatus != "Closed")) { color = "RED"; } 
+          if(diff <= deadline_max && (arch_curstorystatus != "Verify" && arch_curstorystatus != "Closed")) { color = "RED"; } 
         }
         // [YELLOW Case]
-        // ??
+        if(labelstring.includes("일정사전합의")) { color = 'YELLOW'; }
 
         current_Arch_2nd_workflow['Signal'] = color;
         current_Arch_Review['Second Review'][reviewkey]['output'] = true; 
