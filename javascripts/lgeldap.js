@@ -9,6 +9,7 @@ ldap.guid_format = ldap.GUID_FORMAT_B;
 function getLDAP_InfoTest(username)
 {
   username = username.replace('-', '.');
+  username = username.replace('-', '.');
   var opts = {
     filter: '(&(objectclass=user)(samaccountname='+username+'))',
     scope: 'sub',
@@ -76,6 +77,7 @@ function getLDAP_Info(username)
   // MongoDB doesn't support keys with a dot in them so you're going to have to preprocess your JSON file to remove/replace them before importing it
   // or value = value.replace('.', "\\u002e"); reverse....again...
   username = username.replace('-', '.');
+  username = username.replace('-', '.'); // sungil.daniel.kim ㅠㅠㅠ....
 
   var opts = {
     filter: '(&(objectclass=user)(samaccountname='+username+'))',

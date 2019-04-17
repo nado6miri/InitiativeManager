@@ -642,6 +642,7 @@ function getAssignee(jiraIssue) {
         // MongoDB doesn't support keys with a dot in them so you're going to have to preprocess your JSON file to remove/replace them before importing it
         // or value = value.replace('.', "\\u002e");
         value = value.replace('.', '-');
+        value = value.replace('.', '-');
         console.log("getAssignee = ", value);
         return value;
     }
@@ -771,6 +772,7 @@ function getZephyrExeinfo_Tester(ZephyrIssue) {
         let result = ZephyrIssue['executedBy'];
         // MongoDB doesn't support keys with a dot in them so you're going to have to preprocess your JSON file to remove/replace them before importing it
         // or result = result.replace('.', "\\u002e");
+        result = result.replace('.', '-');
         result = result.replace('.', '-');
         return result;
     }

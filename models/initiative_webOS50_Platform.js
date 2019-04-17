@@ -131,7 +131,7 @@ var mongoose = require('mongoose');
 
 // 2. Collection Name 지정.
 //var CollectionName = "initiative_snapshot"
-var CollectionName = "webOS45_MR_Major"
+var CollectionName = "webOS50_Platform"
 
 // 3. Collection에 저장할 Document의 Schema를 지정함.
 const SchemaDefine = { 

@@ -922,7 +922,8 @@ async function makeSnapshot_ArchiReviewInfofromJira(init_index, init_keyvalue, e
       {
         let color = 'GREEN';
         current_Arch_1st_workflow['Signal'] = 'GREEN';
-        if(init_status != 'DRAFTING' && init_status != 'PO REVIEW')
+        //if(init_status != 'DRAFTING' && init_status != 'PO REVIEW')
+        if(init_status != 'DRAFTING' && init_status != 'PO REVIEW' && init_status != 'ELT REVIEW')
         {
           // RED case
           if(labelstring.includes("1st_reviewed") == false) { color = 'RED'; }
@@ -1960,6 +1961,7 @@ async function make_URLinfo()
       // MongoDB doesn't support keys with a dot in them so you're going to have to preprocess your JSON file to remove/replace them before importing it
       // or value = value.replace('.', "\\u002e"); reverse....again...
       let filter_assignee = assignee.replace('-', '.');
+      filter_assignee = filter_assignee.replace('-', '.');
       // EPIC
       current_urlinfo['EPIC_LINK']['DEVELOPER'][assignee] = JSON.parse(JSON.stringify(OrgDevel_link_key));
       for(let key in current_urlinfo['EPIC_LINK']['DEVELOPER'][assignee])
