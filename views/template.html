@@ -1,0 +1,548 @@
+/* html / jquery example */
+
+<style>
+    .tb_default {
+        width: 1100px;
+        border: 1px solid;
+    }
+    .linkarea {
+
+    }
+</style>
+
+<!-- tab style -->
+<style>
+    .tabWrap { width: 1000px; height: 700px; }
+    .tab_Menu { margin: 0px; padding: 0px; list-style: none; }
+    .tabMenu { width: 150px; margin: 0px; text-align: center;
+                padding-top: 10px; padding-bottom: 10px; float: left; }
+    .tabMenu a { color: #000000; font-weight: bold; text-decoration: none; }
+    .current { background-color: #FFFFFF;
+                border: 1px solid blue; border-bottom:hidden; }
+    .tabPage { width: 900px; height: 600px; float: left;
+                border: 1px solid blue; }
+</style>
+
+<!-- table style -->
+<style>
+    .custom_table {
+        width : 100%;
+        border-collapse : collapse;
+        border-spacing : 0px 0px;
+        border : 1px solid #7f7f7f;
+        text-align : center;
+    }
+
+    .custom_table th {
+        padding : 0px;
+        spacing : 0px;
+        border : 1px solid #7f7f7f;
+        text-align : center;
+    }
+    .custom_table td {
+        padding : 0px;
+        spacing : 0px;
+        border : 1px solid #7f7f7f;
+        text-align : center;
+    }
+    .custom_table tr {
+        padding : 0px;
+        spacing : 0px;
+        border : 1px solid #7f7f7f;
+        text-align : center;
+    }
+
+</style>
+
+<html>
+    <head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- for google chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body>
+        <div id = "text field example">
+            Hidden Field : <input type="hidden" name="UserIP" value="<?echo $REMOTE_ADDR?>">
+        </div>
+        <div id = "text field example">
+            Text field Input : <input type="text" id="msginput", name="member_name" value="text를 입력하세요...">
+        </div>
+        <div id = "password input example">
+            Password field Input : <input type="password" name="password" value="1234567898">
+        </div>
+        <div id = "bold text example">
+            <b>Configuration Menu</b>
+        </div>
+        <div id = "text array example">
+                Text Array Input : <textarea rows="5" cols="30" name="contents">input your message.....</textarea>
+        </div>
+        <div id = "reset button example">
+            Reset Button Example : 
+            <form name="input" method="post" action="">
+                    <input type="text" name="memberName1" maxlength="10">
+                    <input type="text" name="memberName2" maxlength="10">
+                    <input type="reset" value="초기화">
+            </form>
+        </div>
+
+        <div id = "reset button example">
+            Submit Button Example : 
+            <form name="input" method="post" action="">
+                    <input type="text" name="memberName1" maxlength="10">
+                    <input type="text" name="memberName2" maxlength="10">
+                    <input type="reset" value="초기화">
+            </form>
+        </div>
+    
+        <div id = "button example">
+            Button Example : 
+            <button id = button1, type="button" onclick=buttton1_handler()>Button1</button>
+        </div>
+        <div id = "select box example">
+            Single Select Box with initial valule - Example : <br>
+            <select id = selectbox1 name="single_selection">
+                <option value="volvo">A</option>
+                <option value="saab">B</option>
+                <option value="opel" selected="selected">C</option>
+                <option value="audi">D</option>
+            </select>
+            <br>
+            Multiple Select Box Example : <br>
+            <select id = selectbox2 name="multi_selection" multiple="multiple" size=5 style="width: 200px">
+                    <option value="volvo">A</option>
+                    <option value="saab">B</option>
+                    <option value="opel">C</option>
+                    <optgroup label="audi">
+                        <option value="audi2">E</option>
+                        <option value="audi3">F</option>
+                        <option value="audi4">G</option>
+                    </optgroup>
+                </select>
+            <br>
+            Select Box with scroll - Example : <br>
+            <select id = selectbox3 name="single_selection" size=3>
+                    <option value="volvo">A</option>
+                    <option value="saab">B</option>
+                    <option value="opel">C</option>
+                    <option value="audi">D</option>
+                    <option value="KIA">E</option>
+            </select>
+        </div>
+        <div id = "radio_checkbox example">
+            Radio button Example : 
+            <fieldset>
+                <input type="radio" name="chk_info" value="HTML">HTML
+                <input type="radio" name="chk_info" value="CSS" checked="checked">CSS
+                <input type="radio" name="chk_info" value="웹디자인">웹디자인
+            </fieldset>
+            <br>                            
+            Checked button Example : 
+            <fieldset>
+                <input type="checkbox" name="chk_info" value="HTML">HTML
+                <input type="checkbox" name="chk_info" value="CSS" checked="checked">CSS
+                <input type="checkbox" name="chk_info" value="웹디자인">웹디자인
+            </fieldset>
+        </div>                        
+        <div id = "file selection example">
+            File Selection Example : <br>
+            <input type="file" name="FileName">
+            <form action="" method="post" enctype="multipart/form-data" name="">
+                <input type="file" name="FileName">
+            </form>
+        </div>
+        <br>
+        <div class="tabWrap">
+            Tab Menu Example :
+            <ul class="tab_Menu">
+                <li class="tabMenu current">
+                    <a href="#tabContent01" >Tab 1</a>
+                </li>
+                <li class="tabMenu">
+                    <a href="#tabContent02" >Tab 2</a>
+                </li>
+                <li class="tabMenu">
+                    <a href="#tabContent03" >Tab 3</a>
+                </li>
+            </ul>
+            <div class="tab_Content_Wrap">
+                <div id="tabContent01" class="tabPage">
+                    Tab1 Content
+                </div>
+                <div id="tabContent02" class="tabPage">
+                    Tab2 Content
+                </div>
+                <div id="tabContent03" class="tabPage">
+                    Tab3 Content
+                </div>
+            </div>
+        </div>
+        <br>
+        <div id = "config table">
+            <table id = "config" class=custom_table>
+                <thead id = "config_thead">
+                    <tr>
+                        <th rowspan="2" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> Row Span = 2</th>
+                        <th colspan="24" style="text-align: center; background-color:rgb(217,217,217); font-weight: bold"> Col Span = 10</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL1</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL2</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL3</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL4</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL5</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL6</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL7</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL8</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL9</th>
+                        <th rowspan="1" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold">COL10</th>
+                    </tr>
+                </thead>
+                <tbody id = "config_body">
+                    <tr id="tr1"><td colspan="3">col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td></tr>
+                    <tr id="tr2"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr3"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr4"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr5"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr6"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr7"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr8"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr9"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                    <tr id="tr10"><td>col=1</td><td>col=2</td><td>col=3</td><td>col=4</td><td>col=5</td><td>col=6</td><td>col=7</td><td>col=8</td><td>col=9</td><td>col=10</td><td>col=11</td></tr>
+                </tbody>
+                <tfoot id = "config_foot">
+                    <tr><td colspan = "5">schedule information</td><td>C</td><td>C</td><td>C</td><td>C</td><td>C</td><td>C</td></tr>
+                </tfoot>
+            </table>
+        </div>
+        <br>
+        <div id = "Marquee example">
+            Marquee Example : <br>
+            <marquee direction="right">오른쪽 방향으로 흐르는 텍스트...</marquee>
+            <marquee direction="left">왼쪽 방향으로 흐르는 텍스트...</marquee>
+            <marquee behavior="scroll">behavior="scroll"</marquee>
+            <marquee behavior="slide">behavior="slide"</marquee>
+            <marquee behavior="alternate">behavior="alternate"</marquee>
+            <marquee scrollamount="10">scrollamount 속성을 10픽셀로 지정</marquee>
+            <marquee loop="1">loop 속성을 1로 지정</marquee>
+        </div>
+        <div id="workflow" style = "position:relative">
+            Image Test : <br>
+            <img src="/images/workflow.png" alt="Smiley face" width="800" height="600">
+            <div class="linkarea" style="top: 30px; left: 0px; width: 30px; height: 30px; cursor: pointer; position:absolute;" clicklink="http://www.naver.com">naver</div>
+            <div class="linkarea" style="top: 30px; left: 300px; width: 30px; height: 30px; cursor: pointer; position:absolute;" clicklink="http://www.daum.net">daum</div>
+        </div>
+        <!-- google chart -->
+        <div id="curve_chart" style="width: 800px; height: 400px"></div>
+        <div id="chart_div" style="width: 800px; height: 400px"></div>
+        <br>
+        <table id="ConfigurationTable" classe=custom_table>
+            <thead id="ConfigurationTable_head">
+                <tr>
+                    <th colspan="2" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> Category</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> Category1</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> Category2</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> Category3</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> Category4</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> Category5</th>
+                </tr>
+                <tr>
+                    <th colspan="2" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> market</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox1</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox2</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox3</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox4</th>
+                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox5</th>
+                </tr>
+            </thead>
+            <tbody id="ConfigurationTable_body">
+                <tr id="max_slot_cnt">
+                    <td rowspan="11"> Config</td><td> max_slot_cnt</td>
+                </tr>
+                <tr id="slot_1st_Bid_KRW">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="slot_2nd_Bid_KRW">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="check_period">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="retry_cnt">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="retry_delaysec">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="target_rate">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="target_rate_adj">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="new_slot_create_ratio">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="new_slot_create_ratio_adj">
+                    <td> max_slot_cnt</td>
+                </tr>
+                <tr id="max_add_bid_cnt">
+                    <td> max_slot_cnt</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+
+
+<!--
+    JQUERY : https://www.w3schools.com/jquery/default.asp
+    Jquery Selector
+    1. Element Selector : $("tag") - $("body"), $("p")
+    2. #id Selector : $("#idname") - $("#button1")
+    3. .class Selector : $(".classname") - $(".clsname")
+    $("*")	Selects all elements	
+    $(this)	Selects the current HTML element	
+    $("p.intro")	Selects all <p> elements with class="intro"	
+    $("p:first")	Selects the first <p> element	
+    $("ul li:first")	Selects the first <li> element of the first <ul>	
+    $("ul li:first-child")	Selects the first <li> element of every <ul>	
+    $("[href]")	Selects all elements with an href attribute	
+    $("a[target='_blank']")	Selects all <a> elements with a target attribute value equal to "_blank"	
+    $("a[target!='_blank']")	Selects all <a> elements with a target attribute value NOT equal to "_blank"	
+    $(":button")	Selects all <button> elements and <input> elements of type="button"	
+    $("tr:even")	Selects all even <tr> elements	
+    $("tr:odd")	    Selects all odd <tr> elements
+
+    object define
+    var obj = $('<tagname>')
+    obj.css().attr().attr()
+-->
+
+<script type="text/javascript">
+    //$(document).ready(function() {  // long syntax
+    $(function() {        // short syntax
+        tabSetting();
+        CreateTable("ConfigurationTable_body", plistx, plisty);
+        // for google chart
+        /*
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawVisualization);
+        */
+        //alert("load completed");
+        var obj = $("<input>").attr("type", "button").attr("value", "buttonXXXX").att;
+        $('body').append(obj);
+        setDivLinks();
+    });
+
+    function buttton1_handler()
+    {
+        alert("Hello world!!!!");
+    }
+
+    function setDivLinks()
+    {
+        $('div.linkarea').each(function(){
+            let link = $(this).attr("clicklink");
+            if(link != undefined && link != "")
+            {
+                $(this).css("cursor", "pointer").click(function(){
+                    window.open($(this).attr("clicklink"));
+                })
+            }
+        });
+    }
+
+    // for google chart
+    function drawChart() 
+    {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        chart.draw(data, options);
+        var chart = new google.visualization.LineChart(document.getElementById('tabContent01'));
+        chart.draw(data, options);
+    }
+
+    function drawVisualization() 
+    {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+          ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+          ['2004/05',  165,      938,         522,             998,           450,      614.6],
+          ['2005/06',  135,      1120,        599,             1268,          288,      682],
+          ['2006/07',  157,      1167,        587,             807,           397,      623],
+          ['2007/08',  139,      1110,        615,             968,           215,      609.4],
+          ['2008/09',  136,      691,         629,             1026,          366,      569.6]
+        ]);
+
+        var options = {
+          title : 'Monthly Coffee Production by Country',
+          vAxis: {title: 'Cups'},
+          hAxis: {title: 'Month'},
+          seriesType: 'bars',
+          series: { 5 : {type: 'line'}},
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        var chart = new google.visualization.ComboChart(document.getElementById('tabContent02'));
+        chart.draw(data, options);
+    }
+
+    function tabSetting() {
+        // 탭 컨텐츠 hide 후 현재 탭메뉴 페이지만 show
+        $('.tabPage').hide();
+        $($('.current').find('a').attr('href')).show();
+ 
+        // Tab 메뉴 클릭 이벤트 생성
+        $('li').click(function (event) {
+            var tagName = event.target.tagName; // 현재 선택된 태그네임
+            var selectedLiTag = (tagName.toString() == 'A') ? $(event.target).parent('li') : $(event.target); // A태그일 경우 상위 Li태그 선택, Li태그일 경우 그대로 태그 객체
+            var currentLiTag = $('li[class~=current]'); // 현재 current 클래그를 가진 탭
+            var isCurrent = false; 
+             
+            // 현재 클릭된 탭이 current를 가졌는지 확인
+            isCurrent = $(selectedLiTag).hasClass('current');
+
+            //alert($(selectedLiTag).text()); 
+            if($(selectedLiTag).text().indexOf("Tab 1") != -1) 
+            { 
+                $('.tabPage').show();
+                $($('#tabContent02')).hide();
+                $($('#tabContent01')).show();
+                $($('#tabContent03')).hide();
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+            }
+            if($(selectedLiTag).text().indexOf("Tab 2") != -1) 
+            { 
+                $($('#tabContent01')).hide();
+                $($('#tabContent02')).show();
+                $($('#tabContent03')).hide();
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawVisualization);
+            }
+
+            // current를 가지지 않았을 경우만 실행
+            if (!isCurrent) {
+                $($(currentLiTag).find('a').attr('href')).hide();
+                $(currentLiTag).removeClass('current');
+ 
+                $(selectedLiTag).addClass('current');
+                $($(selectedLiTag).find('a').attr('href')).show();
+            }
+ 
+            return false;
+        });
+    }
+
+
+    var plistx = [ "P1", "P2", "P3", "P4", "P5" ];
+    var plisty = [ "max_slot_cnt", "slot_1st_Bid_KRW", "slot_2nd_Bid_KRW", "check_period", "retry_cnt", "retry_delaysec", "target_rate", "target_rate_adj", "new_slot_create_ratio", "new_slot_create_ratio_adj", "max_add_bid_cnt" ];
+    let listdata = ["menu0", "menu1", "menu2", "menu3" ];
+
+    function CreateTable(table_bodyID, xlabel, ylabel)
+    {
+        var index = 0;
+        var selecterID = "#" + table_bodyID + " > tr";
+        //alert(selecterID);
+        $(selecterID).each(function () {
+        //$("#ConfigurationTable_body > tr").each(function () {
+            createTds(index++, $(this), xlabel, ylabel);
+        });
+        attachWidgetToTable("Cell_max_slot_cnt_P1", "ListBox");
+        makeListBox("#Cell_max_slot_cnt_P4", "SelNSB4", listdata, ListBox_handleChange, "", "width: 200px", 2, "single", 1);
+        makeListBox("#Cell_max_slot_cnt_P5", "SelNSB5", listdata, ListBox_handleChange, "", "width: 300px", 3, "multiple", 4);
+    }
+
+
+    function createTds(index, obj, xlabel, ylabel) {
+        var cellname = "";
+        for(var i = 0; i < xlabel.length; i++)
+        {
+            cellname = "Cell_" + ylabel[index] +"_"+ xlabel[i];
+            //obj.append($("<td>").css("text-align","center").html('<a href = "https://www.naver.com" target = "_blank">0</a>').attr("statusname", cellname));
+            //obj.append($("<td>").css("text-align","center").text('-').attr("cellname", cellname));
+            obj.append($("<td>").css("text-align","center").text('-').attr("id", cellname));
+        }
+        /*
+        // td 속성 name을 지정하여 tag object를 얻어와 변경하는 case....
+        $('#ConfigurationTable_body > tr').each(function () {
+            var access = $(this).find('td[cellname=Cell_check_period_P1]');
+            access.text("메롱");
+        });
+
+        $("#ConfigurationTable_body").find("td[cellname=Cell_check_period_P2]").text("BBB")
+        */
+        /*
+        // td cell 속성에 id를 부여하여 id를 direct로 검색하여 access 하는 case....
+        $('#Cell_max_slot_cnt-P1').text("메롱");
+        */
+    }
+
+    function attachWidgetToTable(tdID, WidgetCategory) {
+        let accessID = "#" + tdID;
+
+        switch(WidgetCategory)
+        {
+            case "ListBox" : 
+                let ht = '<div><select id = selectbox1 name="single_selection"><option value="volvo">A</option><option value="saab">B</option><option value="opel" selected="selected">C</option><option value="audi">D</option></select></div>'
+                $(accessID).text('').append(ht);
+                break;
+            
+        }
+    }
+
+    function makeListBox(ParentID, ID, datalist, callback, classID, style, defaultIndex, option, size)
+    {
+        /*
+        let result = $('<div><select>');
+        //result = result.find('select').attr("id", "selecterID").attr("size", 5).attr("multiple", "multiple").attr("style", "width: 200px").append("<option value = a>aa").attr("selected", "selected").append("<option value = b>BB");
+        result.find('select').attr("id", "selecterID").append("<option value = a>aa").attr("selected", "selected").append("<option value = b>BB");
+        $('#Cell_max_slot_cnt_P3').append(result);
+        */
+        /*
+        class="center-select__input"
+        onchange="handleChange(this)"
+        */
+        var Obj = null;
+        Obj = $('<div><select>')
+        if(option == "multiple") { Obj.find('select').attr("size", size).attr("id", ID).attr("class", classID).attr("style", style).attr("multiple", "multiple"); }
+        else { Obj.find('select').attr("size", size).attr("id", ID).attr("class", classID).attr("style", style); }
+ 
+        let finalhtml = "";
+        for(i = 0; i < datalist.length; i++)
+        {
+            if(i == defaultIndex) { html = "<option value=" + datalist[i] + " selected=selected>" + datalist[i]; } else { html = "<option value="+datalist[i] + ">" + datalist[i]; }
+            finalhtml += html;
+        }
+        Obj.find('select').append(finalhtml);
+        // on binding
+        Obj.find('select').bind("change", function() { return callback(this, datalist); });
+        $(ParentID).append(Obj);
+    }
+
+    function ListBox_handleChange (selectedObj, itemList) 
+    {
+        for(i = 0; i < itemList.length; i++)
+        {
+            if(selectedObj[i].selected) { console.log("Selected Item[", i, "] = ", selectedObj[i].value); }
+        }
+    }
+</script>
