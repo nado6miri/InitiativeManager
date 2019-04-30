@@ -907,7 +907,7 @@ async function makeSnapshot_ArchiReviewInfofromJira(init_index, init_keyvalue, e
       /*
       [RED] 
        1. init status가 ELT가 지났는데 1stReviewDone == false 이면 위반 : o
-       2. init status가  In Progress 인데 ARCH EPIC Status가 Scoping / Review상태이면 위반 : o
+       2. init status가  In Progress 인데 ARCH EPIC Status가 Scoping 상태 (또는 Review상태는 조건에서 삭제함) 이면 위반 : o
        3. init status가 Delivered/Closed상태인데 Arch Epic이 Delivered/Closed가 아닌경우  : o
        4. Release Sprint 일정 2개 Sprint 이내에도 Arch Epic이 Closed가 안된경우 : o
        [YELLOW]
@@ -927,7 +927,7 @@ async function makeSnapshot_ArchiReviewInfofromJira(init_index, init_keyvalue, e
         {
           // RED case
           if(labelstring.includes("1st_reviewed") == false) { color = 'RED'; }
-          if(init_status == "In Progress" && (arch_epicstatus == 'Scoping' || arch_epicstatus == 'Review')) { color = 'RED'; }
+          if(init_status == "In Progress" && (arch_epicstatus == 'Scoping'/* || arch_epicstatus == 'Review'*/)) { color = 'RED'; }
           if((init_status == "Delivered" || init_status == "Closed") && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'RED'; }
           /*
           let target = initparse.conversionSprintToDate(init_ReleaseSP);
@@ -1563,13 +1563,13 @@ async function makeZephyrStatics()
             else { console.log("[EZE] executionStatus is not Defined = ", status); }
 
             // check the result of last test status.
-            if(status == "1") 
+            if(status == "1" || status == "2") 
             {
               let ez_cur_time = epic_zephyr[k]['Executions'][l]['executedOn'];
               ez_cur_time = ez_cur_time.replace('/', '-');
               ez_cur_time = ez_cur_time.replace(' ', 'T');
               ez_cur_time = new Date(ez_cur_time);
-              if(ez_last_time == 0 || (ez_cur_time - ez_last_time > 0)) { ez_last_time = ez_cur_time, ez_final_status = '1'; }
+              if(ez_last_time == 0 || (ez_cur_time - ez_last_time > 0)) { ez_last_time = ez_cur_time, ez_final_status = status; } //'1'; }
             }
           }
           if(epicz_assignee != null && ez_final_status == '1') { epicz_devel[epicz_assignee]['PassEpicCnt']++; }
@@ -1682,13 +1682,13 @@ async function makeZephyrStatics()
               else { console.log("[SZE] executionStatus is not Defined = ", status); }
 
               // check the result of last test status.
-              if(status == "1") 
+              if(status == "1" || status == "2") 
               {
                 let sz_cur_time = story_zephyr[l]['Executions'][m]['executedOn'];
                 sz_cur_time = sz_cur_time.replace('/', '-');
                 sz_cur_time = sz_cur_time.replace(' ', 'T');
                 sz_cur_time = new Date(sz_cur_time);
-                if(sz_last_time == 0 || (sz_cur_time - sz_last_time > 0)) { sz_last_time = sz_cur_time, sz_final_status = '1'; }
+                if(sz_last_time == 0 || (sz_cur_time - sz_last_time > 0)) { sz_last_time = sz_cur_time, sz_final_status = status; }//'1'; }
               }
             }
             if(storyz_assignee != null && sz_final_status == '1') { storyz_devel[storyz_assignee]['PassStoryCnt']++; }

@@ -1580,6 +1580,7 @@ function getPersonalInfo(displayName, dpcode)
                 temp = parse[1].replace(')', '');
                 temp = temp.split('(');
                 department = temp[0];
+                departmemt = department.replace('.', '-'); // if key has a value of CS-2. case... mongodb insert error need to verify....
                 email = temp[1];
                 break;
             case 3:

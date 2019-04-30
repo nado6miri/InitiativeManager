@@ -186,11 +186,11 @@ async function DB_Sync_PeriodicJob()
     initiative_DB = await load_InitiativeDB(InitMgr_webOS45_MR_Major_filename);
     initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS45_MR_Major', json: initiative_DB };
     await InitMgr_webOS45_MR_Major_DB.insert(initiative_doc);
-
+    /*
     initiative_DB = await load_InitiativeDB(InitMgr_webOS50_SEETV_filename);
     initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS50_SEETV', json: initiative_DB };
     await InitMgr_webOS50_SEETV_DB.insert(initiative_doc);
-
+    */
     initiative_DB = await load_InitiativeDB(InitMgr_webOS50_Initial_filename);
     initiative_doc = { inserted_at : today, Snapshot_at : initiative_DB['snapshotDate'], platform : 'webOS50_Initial', json: initiative_DB };
     await InitMgr_webOS50_Initial_DB.insert(initiative_doc);

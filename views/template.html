@@ -131,19 +131,19 @@
                     <option value="KIA">E</option>
             </select>
         </div>
-        <div id = "radio_checkbox example">
+        <div id = "radio_checkbox example" style="width:300px">
             Radio button Example : 
             <fieldset>
-                <input type="radio" name="chk_info" value="HTML">HTML
-                <input type="radio" name="chk_info" value="CSS" checked="checked">CSS
-                <input type="radio" name="chk_info" value="웹디자인">웹디자인
+                <input type="radio" name="chk_info" value="HTML"/>HTML<br>
+                <input type="radio" name="chk_info" value="CSS" checked="checked"/>CSS<br>
+                <input type="radio" name="chk_info" value="웹디자인"/>웹디자인<br>
             </fieldset>
             <br>                            
             Checked button Example : 
             <fieldset>
-                <input type="checkbox" name="chk_info" value="HTML">HTML
-                <input type="checkbox" name="chk_info" value="CSS" checked="checked">CSS
-                <input type="checkbox" name="chk_info" value="웹디자인">웹디자인
+                <input type="checkbox" name="chk_info" value="HTML"/>HTML
+                <input type="checkbox" name="chk_info" value="CSS" checked="checked"/>CSS
+                <input type="checkbox" name="chk_info" value="웹디자인"/>웹디자인
             </fieldset>
         </div>                        
         <div id = "file selection example">
@@ -250,11 +250,11 @@
                 </tr>
                 <tr>
                     <th colspan="2" style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> market</th>
-                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox1</th>
-                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox2</th>
-                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox3</th>
-                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox4</th>
-                    <th style="text-align: center; background-color: rgb(217,217,217); font-weight: bold"> listbox5</th>
+                    <th id="market_category1"></th>
+                    <th id="market_category2"></th>
+                    <th id="market_category3"></th>
+                    <th id="market_category4"></th>
+                    <th id="market_category5"></th>
                 </tr>
             </thead>
             <tbody id="ConfigurationTable_body">
@@ -290,6 +290,12 @@
                 </tr>
                 <tr id="max_add_bid_cnt">
                     <td> max_slot_cnt</td>
+                </tr>
+                <tr id="status">
+                    <td colspan="2"> status</td>
+                </tr>
+                <tr id="controlBtn">
+                    <td colspan="2">control Btn</td>
                 </tr>
             </tbody>
         </table>
@@ -454,8 +460,9 @@
 
 
     var plistx = [ "P1", "P2", "P3", "P4", "P5" ];
-    var plisty = [ "max_slot_cnt", "slot_1st_Bid_KRW", "slot_2nd_Bid_KRW", "check_period", "retry_cnt", "retry_delaysec", "target_rate", "target_rate_adj", "new_slot_create_ratio", "new_slot_create_ratio_adj", "max_add_bid_cnt" ];
-    let listdata = ["menu0", "menu1", "menu2", "menu3" ];
+    var plisty = [ "max_slot_cnt", "slot_1st_Bid_KRW", "slot_2nd_Bid_KRW", "check_period", "retry_cnt", "retry_delaysec", "target_rate", "target_rate_adj", "new_slot_create_ratio", "new_slot_create_ratio_adj", "max_add_bid_cnt", "status", "controlBtn" ];
+    let portflist = ["menu0", "menu1", "menu2", "menu3", "menu4" ];
+    let slotcnt = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ];
 
     function CreateTable(table_bodyID, xlabel, ylabel)
     {
@@ -466,9 +473,100 @@
         //$("#ConfigurationTable_body > tr").each(function () {
             createTds(index++, $(this), xlabel, ylabel);
         });
-        attachWidgetToTable("Cell_max_slot_cnt_P1", "ListBox");
-        makeListBox("#Cell_max_slot_cnt_P4", "SelNSB4", listdata, ListBox_handleChange, "", "width: 200px", 2, "single", 1);
-        makeListBox("#Cell_max_slot_cnt_P5", "SelNSB5", listdata, ListBox_handleChange, "", "width: 300px", 3, "multiple", 4);
+        
+        makeListBox("#market_category1", "portf1", portflist, ListBox_handleChange, "css_style1", "width: 100px", 0, "single", 1);
+        makeListBox("#market_category2", "portf2", portflist, ListBox_handleChange, "css_style1", "width: 100px", 0, "single", 1);
+        makeListBox("#market_category3", "portf3", portflist, ListBox_handleChange, "css_style1", "width: 100px", 0, "single", 1);
+        makeListBox("#market_category4", "portf4", portflist, ListBox_handleChange, "css_style1", "width: 100px", 0, "single", 1);
+        makeListBox("#market_category5", "portf5", portflist, ListBox_handleChange, "css_style1", "width: 100px", 0, "single", 1);
+
+        makeListBox("#Cell_max_slot_cnt_P1", "slotcnt1", slotcnt, ListBox_handleChange, "css_style1", "width: 100px", 9, "single", 1);
+        makeListBox("#Cell_max_slot_cnt_P2", "slotcnt2", slotcnt, ListBox_handleChange, "css_style1", "width: 100px", 9, "single", 1);
+        makeListBox("#Cell_max_slot_cnt_P3", "slotcnt3", slotcnt, ListBox_handleChange, "css_style1", "width: 100px", 9, "single", 1);
+        makeListBox("#Cell_max_slot_cnt_P4", "slotcnt4", slotcnt, ListBox_handleChange, "css_style1", "width: 100px", 9, "single", 1);
+        makeListBox("#Cell_max_slot_cnt_P5", "slotcnt5", slotcnt, ListBox_handleChange, "css_style1", "width: 100px", 9, "multiple", 5);
+
+        //function makeInputBox(ParentID, ID, type, defaultval, classID, style, callback)
+        makeInputBox("#Cell_slot_1st_Bid_KRW_P1", "firstbidKRW1", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_slot_1st_Bid_KRW_P2", "firstbidKRW2", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_slot_1st_Bid_KRW_P3", "firstbidKRW3", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_slot_1st_Bid_KRW_P4", "firstbidKRW4", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_slot_1st_Bid_KRW_P5", "firstbidKRW5", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+
+        makeInputBox("#Cell_slot_2nd_Bid_KRW_P1", "secondbidKRW1", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 100, InputBoxHandler);
+        makeInputBox("#Cell_slot_2nd_Bid_KRW_P2", "secondbidKRW2", "number", 5000, "css_style1", "width: 100px", 5000, 100000, 100, InputBoxHandler);
+        makeInputBox("#Cell_slot_2nd_Bid_KRW_P3", "secondbidKRW3", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 100, InputBoxHandler);
+        makeInputBox("#Cell_slot_2nd_Bid_KRW_P4", "secondbidKRW4", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 100, InputBoxHandler);
+        makeInputBox("#Cell_slot_2nd_Bid_KRW_P5", "secondbidKRW5", "number", 5000, "css_style1", "width: 100px", 5000, 1000000, 100, InputBoxHandler);
+
+
+        makeInputBox("#Cell_check_period_P1", "checkperiod1", "number", 5, "css_style1", "width: 100px", 1, 120, 1, InputBoxHandler);
+        makeInputBox("#Cell_check_period_P2", "checkperiod2", "number", 5, "css_style1", "width: 100px", 1, 120, 1, InputBoxHandler);
+        makeInputBox("#Cell_check_period_P3", "checkperiod3", "number", 5, "css_style1", "width: 100px", 1, 120, 1, InputBoxHandler);
+        makeInputBox("#Cell_check_period_P4", "checkperiod4", "number", 5, "css_style1", "width: 100px", 1, 120, 1, InputBoxHandler);
+        makeInputBox("#Cell_check_period_P5", "checkperiod5", "number", 5, "css_style1", "width: 100px", 1, 120, 1, InputBoxHandler);
+
+
+        makeInputBox("#Cell_retry_cnt_P1", "retrycnt1", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_cnt_P2", "retrycnt2", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_cnt_P3", "retrycnt3", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_cnt_P4", "retrycnt4", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_cnt_P5", "retrycnt5", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+
+        makeInputBox("#Cell_retry_delaysec_P1", "retry_delaysec1", "number", 2, "css_style1", "width: 100px", 1, 5, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_delaysec_P2", "retry_delaysec2", "number", 2, "css_style1", "width: 100px", 1, 5, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_delaysec_P3", "retry_delaysec3", "number", 2, "css_style1", "width: 100px", 1, 5, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_delaysec_P4", "retry_delaysec4", "number", 2, "css_style1", "width: 100px", 1, 5, 1, InputBoxHandler);
+        makeInputBox("#Cell_retry_delaysec_P5", "retry_delaysec5", "number", 2, "css_style1", "width: 100px", 1, 5, 1, InputBoxHandler);
+
+        makeInputBox("#Cell_target_rate_P1", "target_rate1", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_P2", "target_rate2", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_P3", "target_rate3", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_P4", "target_rate4", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_P5", "target_rate5", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+
+        makeInputBox("#Cell_target_rate_adj_P1", "target_rate_ajd1", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_adj_P2", "target_rate_ajd2", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_adj_P3", "target_rate_ajd3", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_adj_P4", "target_rate_ajd4", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_target_rate_adj_P5", "target_rate_ajd5", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+
+        makeInputBox("#Cell_new_slot_create_ratio_P1", "new_slot_create_ratio1", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_P2", "new_slot_create_ratio2", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_P3", "new_slot_create_ratio3", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_P4", "new_slot_create_ratio4", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_P5", "new_slot_create_ratio5", "number", 4, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+
+        makeInputBox("#Cell_new_slot_create_ratio_adj_P1", "new_slot_create_ratio_ajd1", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_adj_P2", "new_slot_create_ratio_ajd2", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_adj_P3", "new_slot_create_ratio_ajd3", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_adj_P4", "new_slot_create_ratio_ajd4", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+        makeInputBox("#Cell_new_slot_create_ratio_adj_P5", "new_slot_create_ratio_ajd5", "number", 1, "css_style1", "width: 100px", 0.01, 1000, 0.01, InputBoxHandler);
+
+        makeInputBox("#Cell_max_add_bid_cnt_P1", "max_add_bid_cnt1", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_max_add_bid_cnt_P2", "max_add_bid_cnt2", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_max_add_bid_cnt_P3", "max_add_bid_cnt3", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_max_add_bid_cnt_P4", "max_add_bid_cnt4", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+        makeInputBox("#Cell_max_add_bid_cnt_P5", "max_add_bid_cnt5", "number", 5, "css_style1", "width: 100px", 1, 10, 1, InputBoxHandler);
+
+        makeInputBox("#Cell_status_P1", "status1", "text", "none", "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_status_P2", "status2", "text", "none", "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_status_P3", "status3", "text", "none", "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_status_P4", "status4", "text", "none", "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+        makeInputBox("#Cell_status_P5", "status5", "text", "none", "css_style1", "width: 100px", 5000, 1000000, 10, InputBoxHandler);
+
+        makeButton("#Cell_controlBtn_P1", "controlBtn1", "Start", ButtonClickhandler, "css_style1", "width: 100px");
+        makeButton("#Cell_controlBtn_P2", "controlBtn1", "Start", ButtonClickhandler, "css_style1", "width: 100px");
+        makeButton("#Cell_controlBtn_P3", "controlBtn1", "Start", ButtonClickhandler, "css_style1", "width: 100px");
+        makeButton("#Cell_controlBtn_P4", "controlBtn1", "Start", ButtonClickhandler, "css_style1", "width: 100px");
+        makeButton("#Cell_controlBtn_P5", "controlBtn1", "Start", ButtonClickhandler, "css_style1", "width: 100px");
+
+
+        /*
+        makeListBox("#Cell_max_slot_cnt_P4", "SelNSB4", listdata, ListBox_handleChange, "css_style1", "width: 200px", 2, "single", 1);
+        makeListBox("#Cell_max_slot_cnt_P5", "SelNSB5", listdata, ListBox_handleChange, "css_style2", "width: 300px", 3, "multiple", 4);
+        makeButton("#Cell_max_slot_cnt_P1", "SelNSB1", "Start!", ButtonClickhandler, "css_style3", "width: 300px");
+        */
     }
 
 
@@ -479,21 +577,8 @@
             cellname = "Cell_" + ylabel[index] +"_"+ xlabel[i];
             //obj.append($("<td>").css("text-align","center").html('<a href = "https://www.naver.com" target = "_blank">0</a>').attr("statusname", cellname));
             //obj.append($("<td>").css("text-align","center").text('-').attr("cellname", cellname));
-            obj.append($("<td>").css("text-align","center").text('-').attr("id", cellname));
+            obj.append($("<td>").css("text-align","center").text('').attr("id", cellname));
         }
-        /*
-        // td 속성 name을 지정하여 tag object를 얻어와 변경하는 case....
-        $('#ConfigurationTable_body > tr').each(function () {
-            var access = $(this).find('td[cellname=Cell_check_period_P1]');
-            access.text("메롱");
-        });
-
-        $("#ConfigurationTable_body").find("td[cellname=Cell_check_period_P2]").text("BBB")
-        */
-        /*
-        // td cell 속성에 id를 부여하여 id를 direct로 검색하여 access 하는 case....
-        $('#Cell_max_slot_cnt-P1').text("메롱");
-        */
     }
 
     function attachWidgetToTable(tdID, WidgetCategory) {
@@ -509,6 +594,40 @@
         }
     }
 
+    /*
+    List Box
+
+    <div id = "select box example">
+    Single Select Box with initial valule - Example : <br>
+    <select id = selectbox1 name="single_selection">
+        <option value="volvo">A</option>
+        <option value="saab">B</option>
+        <option value="opel" selected="selected">C</option>
+        <option value="audi">D</option>
+    </select>
+    <br>
+    Multiple Select Box Example : <br>
+    <select id = selectbox2 name="multi_selection" multiple="multiple" size=5 style="width: 200px">
+            <option value="volvo">A</option>
+            <option value="saab">B</option>
+            <option value="opel">C</option>
+            <optgroup label="audi">
+                <option value="audi2">E</option>
+                <option value="audi3">F</option>
+                <option value="audi4">G</option>
+            </optgroup>
+        </select>
+    <br>
+    Select Box with scroll - Example : <br>
+    <select id = selectbox3 name="single_selection" size=3>
+            <option value="volvo">A</option>
+            <option value="saab">B</option>
+            <option value="opel">C</option>
+            <option value="audi">D</option>
+            <option value="KIA">E</option>
+    </select>
+    </div>
+    */
     function makeListBox(ParentID, ID, datalist, callback, classID, style, defaultIndex, option, size)
     {
         /*
@@ -516,10 +635,6 @@
         //result = result.find('select').attr("id", "selecterID").attr("size", 5).attr("multiple", "multiple").attr("style", "width: 200px").append("<option value = a>aa").attr("selected", "selected").append("<option value = b>BB");
         result.find('select').attr("id", "selecterID").append("<option value = a>aa").attr("selected", "selected").append("<option value = b>BB");
         $('#Cell_max_slot_cnt_P3').append(result);
-        */
-        /*
-        class="center-select__input"
-        onchange="handleChange(this)"
         */
         var Obj = null;
         Obj = $('<div><select>')
@@ -538,11 +653,116 @@
         $(ParentID).append(Obj);
     }
 
-    function ListBox_handleChange (selectedObj, itemList) 
+    /*
+    List Box onchange Callback.... Event 종류 참조 : https://heavening.tistory.com/23
+    */
+
+    function ListBox_handleChange (self, itemList) 
     {
+        //console.log("ListBox_handleChange = ", self);
         for(i = 0; i < itemList.length; i++)
         {
-            if(selectedObj[i].selected) { console.log("Selected Item[", i, "] = ", selectedObj[i].value); }
+            if(self[i].selected) { console.log("Selected Item[", i, "] = ", self[i].value); }
+            //if(self[i].selected) { console.log("Selected Item[", i, "] = ", self[i].value); self[i].attr("selected", "selected"); } else { self[i].removeAttr("selected"); } // Can't use this function... only reference attr/removeAttr
         }
+    }
+
+    /*
+    get selected item value from listbox....
+    */
+    function getListBox_values(id) 
+    {
+        id = "#" + id;
+        console.log(id);
+        let Obj = $(id).find('option');
+        console.log(Obj);
+        let selval = [];
+        let j = 0;
+        for(i = 0; i < Obj.length; i++)
+        {
+            if(Obj[i].selected) 
+            { 
+                //console.log("[getListBox_values] Selected Item[", i, "] = ", Obj[i].value); 
+                selval.push(Obj[i].value); 
+            }
+        }
+        console.log("Selected Items in ListBox is ", selval);
+        return selval;
+    }
+
+
+
+    /*
+    Button 생성
+    <div">
+        <button id = button1, type="button" onclick=buttton1_handler()>Button1</button>
+    </div>
+    */
+    function makeButton(ParentID, ID, Name, callback, classID, style)
+    {
+        var Obj = $('<div><button>');
+        Obj.find('button').attr("id", ID).attr("class", classID).attr("style", style).attr("typpe", "button").text(Name);
+        Obj.find('button').bind("click", function() { return callback(this); }); 
+        $(ParentID).append(Obj);
+    }
+
+    /*
+    Button Click Handler.......
+    */
+    function ButtonClickhandler(self)
+    {
+        //console.log("ButtonClickhandler = ", self);
+        setConfig();
+        alert("Button clicked.........");
+    }
+
+    /*
+    text input box
+    <div id = "text field example">
+        Text field Input : <input type="text" id="msginput", name="member_name" value="text를 입력하세요...">
+        Text field Input : <input type="number" id="msginput", name="member_name" value="text를 입력하세요...">
+    </div>
+    */
+    function makeInputBox(ParentID, ID, type, defaultstr, classID, style, min, max, step, callback)
+    {
+        var Obj = $('<div><input>');
+        Obj.find('input').attr("type", type).attr("id", ID).attr("class", classID).attr("style", style).val(defaultstr);
+        if(type === "number") 
+        { 
+            Obj.find('input').attr('min', min).attr('max', max).attr('step', step);
+            //Obj.find('input').bind("keyup", function() { return callback(this, min, max); });
+            Obj.find('input').bind("focusout", function() { return callback(this, min, max); });
+        }
+        $(ParentID).append(Obj);
+    }
+
+    function InputBoxHandler(self, min, max)
+    {
+        //console.log("InputBoxHandler = ", self);
+        if(self.value < min ) { self.value = min; console.log("force fix min value"); }
+        if(self.value > max ) { self.value = max; console.log("force fix max value"); }
+    }
+
+    function setConfig()
+    {
+        getListBox_values("slotcnt5");
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://10.186.115.57:7000/config",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "cache-control": "no-cache",
+            },
+            "data": {
+                "userid": "========================",
+                "password": "aaaaaaaaaaaaaaHHHHHHHH"
+            }
+        }
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
     }
 </script>
