@@ -1211,17 +1211,36 @@ async function makeSnapshot_EpicZephyrExecutionInfofromJira(init_index, epic_ind
     console.log("getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[Z-index]:", zephyr_index, "[Z-KeyID]:", zephyrkeyID);
     let issue = 0;
 
-    for (var i = 0; i < zephyrExecution['executions'].length; i++) 
+    for (var i = 0, j = 0; i < zephyrExecution['executions'].length; i++) 
     {
-      current_zephyr_exeinfo = { };
-      issue = zephyrExecution['executions'][i];
-      current_zephyr_exeinfo['id'] = initparse.getZephyrExeinfo_ID(issue); 
-      current_zephyr_exeinfo['executionStatus'] = initparse.getZephyrExeinfo_Status(issue);
-      current_zephyr_exeinfo['executedOn'] = initparse.getZephyrExeinfo_Date(issue);
-      current_zephyr_exeinfo['executedBy'] = initparse.getZephyrExeinfo_Tester(issue);
-      current_zephyr_exeinfo['cycleId'] = initparse.getZephyrExeinfo_cycleId(issue);
-      current_zephyr_exeinfo['cycleName'] = initparse.getZephyrExeinfo_cycleName(issue);
-      initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['Zephyr']['ZephyrTC'][zephyr_index]['Executions'][i] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
+        current_zephyr_exeinfo = { };
+        issue = zephyrExecution['executions'][i];
+        current_zephyr_exeinfo['id'] = initparse.getZephyrExeinfo_ID(issue); 
+        current_zephyr_exeinfo['executionStatus'] = initparse.getZephyrExeinfo_Status(issue);
+        current_zephyr_exeinfo['executedOn'] = initparse.getZephyrExeinfo_Date(issue);
+        current_zephyr_exeinfo['executedBy'] = initparse.getZephyrExeinfo_Tester(issue);
+        current_zephyr_exeinfo['cycleId'] = initparse.getZephyrExeinfo_cycleId(issue);
+        current_zephyr_exeinfo['cycleName'] = initparse.getZephyrExeinfo_cycleName(issue);
+        
+        // 20190523 : jepyhr를 오래 생성해 놓고 재사용시 Initiative 생성시점 이전의 execution 정보가 실적으로 포함되는 문제 개선
+        let init_created = initiative_DB['issues'][init_index]['created']; // "2018-12-03T12:05:34.000+0900"
+        init_created = init_created.split('+'), init_created = moment(init_created[0]);
+        let executed = current_zephyr_exeinfo['executedOn']; 
+        if(executed != null)
+        {
+            executed = executed.split(' '), executed = executed[0].replace('/', '-'), executed = executed.replace('/', '-'), executed = moment(executed);
+            // executedOn : "2019/02/13 10:26"
+            if(init_created < executed) // initiative 생성 이후로 수행된 TC만 집계 필요
+            {
+                initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['Zephyr']['ZephyrTC'][zephyr_index]['Executions'][j] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
+                j++;
+                console.log("Add ==> Valid TC Excecution : [", i, "][", j, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+            }
+            else
+            {
+                console.log("Skip ==> Invalid TC Excecution : [", i, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+            }
+        }
     }
   }).catch(error => {
     console.log("[Catch] getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[Z-index]:", 
@@ -1248,21 +1267,40 @@ async function makeSnapshot_SyncEpicZephyrExecutionInfofromJira(init_index, epic
     var zephyrkeyID = zephyr_issueIdlist[i];
     await initiative_jiraquery.getZephyerExecutionfromJira(zephyrkeyID)
     .then((zephyrExecution) => {
-      console.log("getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[Z-index]:", i, "[Z-KeyID]:", zephyrkeyID);
-      //console.log(zephyrExecution);
-      let issue = 0;
-      for (var j = 0; j < zephyrExecution['executions'].length; j++) 
-      {
-        current_zephyr_exeinfo = {}; 
-        issue = zephyrExecution['executions'][j];
-        current_zephyr_exeinfo['id'] = initparse.getZephyrExeinfo_ID(issue); 
-        current_zephyr_exeinfo['executionStatus'] = initparse.getZephyrExeinfo_Status(issue);
-        current_zephyr_exeinfo['executedOn'] = initparse.getZephyrExeinfo_Date(issue);
-        current_zephyr_exeinfo['executedBy'] = initparse.getZephyrExeinfo_Tester(issue);
-        current_zephyr_exeinfo['cycleId'] = initparse.getZephyrExeinfo_cycleId(issue);
-        current_zephyr_exeinfo['cycleName'] = initparse.getZephyrExeinfo_cycleName(issue);
-        initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['Zephyr']['ZephyrTC'][i]['Executions'][j] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
-      }
+        console.log("getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[Z-index]:", i, "[Z-KeyID]:", zephyrkeyID);
+        //console.log(zephyrExecution);
+        let issue = 0;
+        for (var j = 0, k = 0; j < zephyrExecution['executions'].length; j++) 
+        {
+            current_zephyr_exeinfo = {}; 
+            issue = zephyrExecution['executions'][j];
+            current_zephyr_exeinfo['id'] = initparse.getZephyrExeinfo_ID(issue); 
+            current_zephyr_exeinfo['executionStatus'] = initparse.getZephyrExeinfo_Status(issue);
+            current_zephyr_exeinfo['executedOn'] = initparse.getZephyrExeinfo_Date(issue);
+            current_zephyr_exeinfo['executedBy'] = initparse.getZephyrExeinfo_Tester(issue);
+            current_zephyr_exeinfo['cycleId'] = initparse.getZephyrExeinfo_cycleId(issue);
+            current_zephyr_exeinfo['cycleName'] = initparse.getZephyrExeinfo_cycleName(issue);
+
+            // 20190523 : jepyhr를 오래 생성해 놓고 재사용시 Initiative 생성시점 이전의 execution 정보가 실적으로 포함되는 문제 개선
+            let init_created = initiative_DB['issues'][init_index]['created']; // "2018-12-03T12:05:34.000+0900"
+            init_created = init_created.split('+'), init_created = moment(init_created[0]);
+            let executed = current_zephyr_exeinfo['executedOn']; 
+            if(executed != null)
+            {
+                executed = executed.split(' '), executed = executed[0].replace('/', '-'), executed = executed.replace('/', '-'), executed = moment(executed);
+                // executedOn : "2019/02/13 10:26"
+                if(init_created < executed) // initiative 생성 이후로 수행된 TC만 집계 필요
+                {
+                    initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['Zephyr']['ZephyrTC'][i]['Executions'][k] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
+                    k++;
+                    console.log("Add ==> Valid TC Excecution : [", j, "][", k, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+                }
+                else
+                {
+                    console.log("Skip ==> Invalid TC Excecution : [", j, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+                }
+            }
+        }
     }).catch(error => {
       console.log("[Catch] getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[Z-index]:", 
       i, "[Z-KeyID]:", zephyrkeyID, " - exception error = ", error);
@@ -1353,19 +1391,38 @@ async function makeSnapshot_StoryZephyrExecutionInfofromJira(init_index, epic_in
     //console.log(zephyrExecution);
     let issue = 0;
 
-    for (var i = 0; i < zephyrExecution['executions'].length; i++) 
+    for (var i = 0, j = 0; i < zephyrExecution['executions'].length; i++) 
     {
-      let status = 0;
-      current_zephyr_exeinfo = {}; 
-      //current_zephyr_exeinfo = JSON.parse(JSON.stringify(zephyr_exeinfo));
-      issue = zephyrExecution['executions'][i];
-      current_zephyr_exeinfo['id'] = initparse.getZephyrExeinfo_ID(issue); 
-      current_zephyr_exeinfo['executionStatus'] = status = initparse.getZephyrExeinfo_Status(issue);
-      current_zephyr_exeinfo['executedOn'] = initparse.getZephyrExeinfo_Date(issue);
-      current_zephyr_exeinfo['executedBy'] = initparse.getZephyrExeinfo_Tester(issue);
-      current_zephyr_exeinfo['cycleId'] = initparse.getZephyrExeinfo_cycleId(issue);
-      current_zephyr_exeinfo['cycleName'] = initparse.getZephyrExeinfo_cycleName(issue);
-      initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['STORY']['issues'][story_index]['Zephyr']['ZephyrTC'][zephyr_index]['Executions'][i] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
+        let status = 0;
+        current_zephyr_exeinfo = {}; 
+        //current_zephyr_exeinfo = JSON.parse(JSON.stringify(zephyr_exeinfo));
+        issue = zephyrExecution['executions'][i];
+        current_zephyr_exeinfo['id'] = initparse.getZephyrExeinfo_ID(issue); 
+        current_zephyr_exeinfo['executionStatus'] = status = initparse.getZephyrExeinfo_Status(issue);
+        current_zephyr_exeinfo['executedOn'] = initparse.getZephyrExeinfo_Date(issue);
+        current_zephyr_exeinfo['executedBy'] = initparse.getZephyrExeinfo_Tester(issue);
+        current_zephyr_exeinfo['cycleId'] = initparse.getZephyrExeinfo_cycleId(issue);
+        current_zephyr_exeinfo['cycleName'] = initparse.getZephyrExeinfo_cycleName(issue);
+
+        // 20190523 : jepyhr를 오래 생성해 놓고 재사용시 Initiative 생성시점 이전의 execution 정보가 실적으로 포함되는 문제 개선
+        let init_created = initiative_DB['issues'][init_index]['created']; // "2018-12-03T12:05:34.000+0900"
+        init_created = init_created.split('+'), init_created = moment(init_created[0]);
+        let executed = current_zephyr_exeinfo['executedOn']; 
+        if(executed != null)
+        {
+            executed = executed.split(' '), executed = executed[0].replace('/', '-'), executed = executed.replace('/', '-'), executed = moment(executed);
+            // executedOn : "2019/02/13 10:26"
+            if(init_created < executed) // initiative 생성 이후로 수행된 TC만 집계 필요
+            {
+                initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['STORY']['issues'][story_index]['Zephyr']['ZephyrTC'][zephyr_index]['Executions'][j] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
+                j++;
+                console.log("Add ==> Valid TC Excecution : [", i, "][", j, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+            }
+            else
+            {
+                console.log("Skip ==> Invalid TC Excecution : [", i, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+            }
+        }
     }
   }).catch(error => {
     console.log("getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[S-index]:", story_index, 
@@ -1396,7 +1453,7 @@ async function makeSnapshot_SyncStoryZephyrExecutionInfofromJira(init_index, epi
       console.log("getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[S-index]:", story_index, "[Z-index]:", i, "[Z-KeyID]:", zephyrkeyID);
       //console.log(zephyrExecution);
       let issue = 0;
-      for (var j = 0; j < zephyrExecution['executions'].length; j++) 
+      for (var j = 0, k = 0; j < zephyrExecution['executions'].length; j++) 
       {
         current_zephyr_exeinfo = {}; 
         //current_zephyr_exeinfo = JSON.parse(JSON.stringify(zephyr_exeinfo));
@@ -1407,9 +1464,26 @@ async function makeSnapshot_SyncStoryZephyrExecutionInfofromJira(init_index, epi
         current_zephyr_exeinfo['executedBy'] = initparse.getZephyrExeinfo_Tester(issue);
         current_zephyr_exeinfo['cycleId'] = initparse.getZephyrExeinfo_cycleId(issue);
         current_zephyr_exeinfo['cycleName'] = initparse.getZephyrExeinfo_cycleName(issue);
-        //current_zephyr_exeinfo = JSON.parse(JSON.stringify(zephyr_exeinfo));
-        //console.log(zephyrExecution['executions'][j]);
-        initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['STORY']['issues'][story_index]['Zephyr']['ZephyrTC'][i]['Executions'][j] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
+
+        // 20190523 : jepyhr를 오래 생성해 놓고 재사용시 Initiative 생성시점 이전의 execution 정보가 실적으로 포함되는 문제 개선
+        let init_created = initiative_DB['issues'][init_index]['created']; // "2018-12-03T12:05:34.000+0900"
+        init_created = init_created.split('+'), init_created = moment(init_created[0]);
+        let executed = current_zephyr_exeinfo['executedOn']; 
+        if(executed != null)
+        {
+            executed = executed.split(' '), executed = executed[0].replace('/', '-'), executed = executed.replace('/', '-'), executed = moment(executed);
+            // executedOn : "2019/02/13 10:26"
+            if(init_created < executed) // initiative 생성 이후로 수행된 TC만 집계 필요
+            {
+                initiative_DB['issues'][init_index]['EPIC']['issues'][epic_index]['STORY']['issues'][story_index]['Zephyr']['ZephyrTC'][i]['Executions'][k] = JSON.parse(JSON.stringify(current_zephyr_exeinfo)); 
+                k++;
+                console.log("Add ==> Valid TC Excecution : [", j, "][", k, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+            }
+            else
+            {
+                console.log("Skip ==> Invalid TC Excecution : [", j, "] [executedOn] = ", current_zephyr_exeinfo['executedOn']);
+            }
+        }
       }
     }).catch(error => {
       console.log("getZephyerExecutionfromJira ==== [I-index]:", init_index, "[E-index]:", epic_index, "[S-index]:", story_index,
@@ -1566,7 +1640,7 @@ async function makeZephyrStatics()
             if(status == "1" || status == "2") 
             {
               let ez_cur_time = epic_zephyr[k]['Executions'][l]['executedOn'];
-              ez_cur_time = ez_cur_time.replace('/', '-');
+              ez_cur_time = ez_cur_time.replace('/', '-'), ez_cur_time = ez_cur_time.replace('/', '-');
               ez_cur_time = ez_cur_time.replace(' ', 'T');
               ez_cur_time = new Date(ez_cur_time);
               if(ez_last_time == 0 || (ez_cur_time - ez_last_time > 0)) { ez_last_time = ez_cur_time, ez_final_status = status; } //'1'; }
@@ -1671,7 +1745,7 @@ async function makeZephyrStatics()
               if((storyze_assignee in epicz_devel) == false) { epicz_devel[storyze_assignee] = JSON.parse(JSON.stringify(StaticsInfo)); }
               if((storyze_assignee in storyz_devel) == false) { storyz_devel[storyze_assignee] = JSON.parse(JSON.stringify(StaticsInfo)); }
 
-              console.log("[SZ-Exec] i = ", i, " j = ", j, " k = ", k, " l = ", l, " m = ", m);    
+              console.log("[SZ-Exec] i = ", i, " j = ", j, " k = ", k, " l = ", l, " m = ", m, "storyz_assignee = ", storyz_assignee, "storyze_assignee = ", storyze_assignee);    
 
               let status = story_zephyr[l]['Executions'][m]['executionStatus'];
               storyz_devel[storyze_assignee]['ZephyrExecutionCnt']++;
@@ -1685,10 +1759,12 @@ async function makeZephyrStatics()
               if(status == "1" || status == "2") 
               {
                 let sz_cur_time = story_zephyr[l]['Executions'][m]['executedOn'];
-                sz_cur_time = sz_cur_time.replace('/', '-');
+                sz_cur_time = sz_cur_time.replace('/', '-'), sz_cur_time = sz_cur_time.replace('/', '-');
                 sz_cur_time = sz_cur_time.replace(' ', 'T');
                 sz_cur_time = new Date(sz_cur_time);
-                if(sz_last_time == 0 || (sz_cur_time - sz_last_time > 0)) { sz_last_time = sz_cur_time, sz_final_status = status; }//'1'; }
+                //console.log("[NSB] executedOn = ", story_zephyr[l]['Executions'][m]['executedOn'], "sz_cur_time = ", sz_cur_time, "sz_last_time = ", sz_last_time, "(sz_cur_time - sz_last_time > 0) = ", (sz_cur_time - sz_last_time > 0));
+                //console.log("[SZ-Exec] i = ", i, " j = ", j, " k = ", k, " l = ", l, " m = ", m, "storyz_assignee = ", storyz_assignee, "storyze_assignee = ", storyze_assignee, "status = ", status, "sz_final_status = ", sz_final_status);    
+                if(sz_last_time == 0 || (sz_cur_time - sz_last_time > 0)) { sz_last_time = sz_cur_time, sz_final_status = status; console.log("Last Exe (m) = ", m); }//'1'; }
               }
             }
             if(storyz_assignee != null && sz_final_status == '1') { storyz_devel[storyz_assignee]['PassStoryCnt']++; }

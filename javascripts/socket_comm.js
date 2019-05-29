@@ -1,5 +1,5 @@
 var http = require('http');
-var initApi = require('./initiativemgr');
+var initApi = require('./initiative_jiraquery_api');
 var socket_server = 0;
 
 // http://bcho.tistory.com/899 
@@ -8,7 +8,7 @@ function socket_communication()
     if(socket_server == 0)
     {
         console.log("Initialize socket communication");
-        socket_server = http.createServer((req, res) => { }).listen(5555);
+        socket_server = http.createServer((req, res) => { }).listen(6555);
         // upgrade http server to socket.io server
         var socketcommm = require('socket.io').listen(socket_server);
 
@@ -24,11 +24,10 @@ function socket_communication()
                 console.log('toclient :' + data.msg);
 
                 // Use Promise Object
-                initApi.get_InitiativeListfromJira("filterID", 46093).then(function (data)
+                initApi.get_InitiativeListfromJira("filterID", 46093, false).then(function (data)
                 {
                     console.log("Initiative List gathering ok - Promise");
                     console.log(data);
-                    res.send('Initiative List gathering ok - Promise');
                     socket.emit('initiative_lists', data);
                 }).catch(function (err)
                 {
@@ -46,7 +45,7 @@ function socket_communication()
             var cmd = data.msg;
             if ("all" == cmd) {
                 // Use Promise Object
-                initApi.get_InitiativeListfromJira("filterID", 46093).then(function (data)
+                initApi.get_InitiativeListfromJira("filterID", 46093, false).then(function (data)
                 {
                     console.log("******Initiative List gathering ok - Promise*******");
                     console.log(JSON.stringify(data));

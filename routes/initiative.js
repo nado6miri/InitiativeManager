@@ -11,9 +11,11 @@ var XMLHttpRequest = require('xmlhttprequest-ssl').XMLHttpRequest;
 var socketcomm = require('../javascripts/socket_comm');
 var initapi = require('../javascripts/initiativemgr');
 
+socketcomm.socket_communication();
+
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  socketcomm.socket_communication();
   res.writeHead(200, { 'Content-Type': 'text/html' }); // header 설정
   fs.readFile(__dirname + '/../views/initiative.html', (err, data) => { // 파일 읽는 메소드
       if (err) {
@@ -25,7 +27,6 @@ router.get('/', function(req, res, next) {
 
 /* GET users listing. */
 router.get('/list', function(req, res, next) {
-  socketcomm.socket_communication();
   // Use Callback
   initapi.get_InitiativeList(req, res, next);
 });
@@ -33,7 +34,6 @@ router.get('/list', function(req, res, next) {
 
 /* GET users listing. */
 router.get('/listP', function(req, res, next) {
-  socketcomm.socket_communication();
   // Use Promise Object
   initapi.get_InitiativeListfromJira().then(function (data)
     {
