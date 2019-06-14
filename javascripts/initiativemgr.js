@@ -463,9 +463,9 @@ function load_DevelopersDB(filename)
           }
         });
         */
-       console.log("file is exist");
-       let data = fs.readFileSync(filename, 'utf8');
-       developerslist = JSON.parse(data); 
+      console.log("file is exist");
+      let data = fs.readFileSync(filename, 'utf8');
+      developerslist = JSON.parse(data); 
       }
       else
       {
