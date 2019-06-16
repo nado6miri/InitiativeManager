@@ -67,7 +67,7 @@ function getLDAP_InfoTest(username)
 }
 
 
-const exceptionlist = ['Unassigned', 'null', 'stan.kim', 'buyoung.yun', 'juneyoung.jung', 'hyokak.kim', 's2.kim', 'heekyoung.seo', 'lgyoungjun.kim', 'jaehak.lee', 'se.lee', 'divyabharathi.n', 'yoonie.shon', 'kumar.vikram' ];
+const exceptionlist = ['Unassigned', 'null', 'stan.kim', 'buyoung.yun', 'juneyoung.jung', 'hyokak.kim', 's2.kim', 'heekyoung.seo', 'lgyoungjun.kim', 'jaehak.lee', 'se.lee', 'divyabharathi.n', 'yoonie.shon', 'kumar.vikram', 'rahul.sharan', 'mijin.baek' ];
 //const exceptionlist = ['Unassigned', 'null', 'stan-kim', 'buyoung-yun', 'juneyoung-jung', 'hyokak-kim', 's2-kim', 'heekyoung-seo', 'lgyoungjun-kim', 'jaehak-lee', 'se-lee', 'divyabharathi-n', 'kumar.vikram'];
 
 
