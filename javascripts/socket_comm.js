@@ -8,7 +8,7 @@ function socket_communication()
     if(socket_server == 0)
     {
         console.log("Initialize socket communication");
-        socket_server = http.createServer((req, res) => { }).listen(6555);
+        socket_server = http.createServer((req, res) => { }).listen(7555);
         // upgrade http server to socket.io server
         var socketcommm = require('socket.io').listen(socket_server);
 
