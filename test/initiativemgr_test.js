@@ -15,7 +15,7 @@ async function Test_Function()
   });
   */
 
-  initiativemgr.makeSnapshot_InitiativeListfromJira("keyID", "TVPLAT-19666", true);   // test KEY
+  initiativemgr.makeSnapshot_InitiativeListfromJira("keyID", "TVPLAT-25532", true);   // test KEY
 
   //lgldap.getLDAP_Info('stan.kim').then((result) => { console.log("Department = ", result)});  
   /*
@@ -26,11 +26,11 @@ async function Test_Function()
         .catch((error) => { console.log("[ERR] ldap.getLDAP_Info = ", error)});
   
   */
-  // admin DBì—ì„œ DBë‹¨ìœ„ë¡œ USER ê´€ë¦¬í•  ê²½ìš°
+  // admin DB?—?„œ DB?‹¨?œ„ë¡? USER ê´?ë¦¬í•  ê²½ìš°
   //mongoose.connect('mongodb://sdet:sdet@127.0.0.1:27017/admin', { dbName: "initiativemgr", useNewUrlParser : true }, function(error) { console.log("mongoose error = ", error)})
   //mongoose.connect('mongodb://initiativemgr:initiativemgr@127.0.0.1:27017/admin', { dbName: "initiativemgr", useNewUrlParser : true }, function(error) { console.log("mongoose error = ", error)})
 
-  // DBë‹¨ìœ„ë¡œ USER ê´€ë¦¬í•  ê²½ìš°
+  // DB?‹¨?œ„ë¡? USER ê´?ë¦¬í•  ê²½ìš°
   //mongoose.connect('mongodb://initiativemgr:initiativemgr@127.0.0.1:27017/initiativemgr', { dbName: "initiativemgr", useNewUrlParser : true }, function(error) { console.log("mongoose error = ", error)})
   /*
   var initiative_DB = {};
@@ -56,15 +56,15 @@ function mongo_connectDB(initiative_DB)
     console.log("initative = ", initiative_DB);
 
     const databaseUrl = 'mongodb://initiativemgr:initiativemgr@127.0.0.1:27017/admin';
-    console.log("DB ì—°ê²°ì„ ì‹œë„í•©ë‹ˆë‹¤.");
-    mongoose.Promise = global.Promise; // mongooseì˜ Promise ê°ì²´ëŠ” globalì˜ Promise ê°ì²´ë¥¼ ì‚¬ìš©í•˜ë„ë¡ í•¨.
+    console.log("DB ?—°ê²°ì„ ?‹œ?„?•©?‹ˆ?‹¤.");
+    mongoose.Promise = global.Promise; // mongoose?˜ Promise ê°ì²´?Š” global?˜ Promise ê°ì²´ë¥? ?‚¬?š©?•˜?„ë¡? ?•¨.
     mongoose.connect(databaseUrl, { dbName: "initiativemgr", useNewUrlParser : true });
     database = mongoose.connection;
     database.on('error', console.error.bind(console, 'mongoose connection error'));
     database.on('open', () => {
       console.log("connect to database successfully");
       /*
-      // 1. User Schima ì •ì˜ ë° ì •í˜•í™”ëœ Data ì €ì¥í•˜ê¸°
+      // 1. User Schima ? •?˜ ë°? ? •?˜•?™”?œ Data ????¥?•˜ê¸?
       var InitmgrSchima = mongoose.Schema({id:String, name:String, password: String});
       var InitmgrModel = mongoose.model("sungbin", InitmgrSchima); // 1st param : Collection Name
       var data = new InitmgrModel({id:'216', name: 'sungbin6', password: '1236'});
@@ -74,7 +74,7 @@ function mongo_connectDB(initiative_DB)
       */
       
       /*
-      // 2. ì •í˜•í™” í•˜ê¸° ì–´ë ¤ìš´ Schima êµ¬ì¡° ì¦‰ JSONìœ¼ë¡œ ëœ fileì„ DBë¡œ Save Test....
+      // 2. ? •?˜•?™” ?•˜ê¸? ?–´? ¤?š´ Schima êµ¬ì¡° ì¦? JSON?œ¼ë¡? ?œ file?„ DBë¡? Save Test....
       var InitmgrSchima = mongoose.Schema({inserted_at : Date, Updated_at : Date, json: Object});    
       var InitmgrModel = mongoose.model("snapshot", InitmgrSchima);
       var today = new Date();
@@ -82,7 +82,7 @@ function mongo_connectDB(initiative_DB)
       data.save();
       */
 
-      // 3. ì €ì¥ëœ ë¹„ì •í˜•í™” JSON Objectë¥¼ DBë¡œ ë¶€í„° Find Test....
+      // 3. ????¥?œ ë¹„ì •?˜•?™” JSON Objectë¥? DBë¡? ë¶??„° Find Test....
       var InitmgrSchima = mongoose.Schema({inserted_at : Date, Updated_at : Date, json: Object});    
       var InitmgrModel = mongoose.model("snapshot", InitmgrSchima);
       InitmgrModel.find().then((result) => { 
@@ -98,7 +98,7 @@ function mongo_connectDB(initiative_DB)
 
 
 /*
-  load_InitiativeDB : filename(Pathì •ë³´ í¬í•¨)ì„ ì½ì–´ initiative_DB ê°ì²´(JSON)ìœ¼ë¡œ Loadingí•œë‹¤.
+  load_InitiativeDB : filename(Path? •ë³? ?¬?•¨)?„ ?½?–´ initiative_DB ê°ì²´(JSON)?œ¼ë¡? Loading?•œ?‹¤.
 */
 function load_InitiativeDB(filename)
 {
@@ -122,7 +122,7 @@ function load_InitiativeDB(filename)
 
 
 /*
-  Save_JSON_file : ì „ë‹¬ëœ JSONê°ì²´ë¥¼ filename(Pathì •ë³´ í¬í•¨)ìœ¼ë¡œ ì €ì¥í•œë‹¤.
+  Save_JSON_file : ? „?‹¬?œ JSONê°ì²´ë¥? filename(Path? •ë³? ?¬?•¨)?œ¼ë¡? ????¥?•œ?‹¤.
 */
 function Save_JSON_file(jsonObject, filename)
 {

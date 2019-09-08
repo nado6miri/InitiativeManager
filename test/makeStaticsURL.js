@@ -18,7 +18,7 @@ function Test_Function()
     console.log(index + ': ' + val);
   });
   */
-  initiativemgr.makeSnapshot_StaticsURL(JSON_Path + 'webOS50_Initial_filter_45402/initiative_DB_filterID_KeyListOnly_45402_2019-05-29T12-30-00.json');
+  initiativemgr.makeSnapshot_StaticsURL(JSON_Path + 'webOS50_SEETV_filter_45938/initiative_DB_filterID_KeyListOnly_45938_2019-06-17T06-15-00.json');
 }  
 
 Test_Function();

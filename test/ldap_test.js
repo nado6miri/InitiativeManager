@@ -15,7 +15,7 @@ async function Test_Function()
   });
   */
 
- lgldap.getLDAP_Info('raja.rathinavel').then((result) => { 
+ lgldap.getLDAP_Info('juhee.cho').then((result) => { 
     console.log("revove . from department = ", result);
   })
   .catch((error) => { console.log("[ERR] ldap.getLDAP_Info = ", error)});

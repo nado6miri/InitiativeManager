@@ -631,7 +631,7 @@ async function makeSnapshot_InitiativeListfromJira(querymode, filterID, withChgl
     initiative_DB['total'] = initiativelist.total;
     for (var i = 0; i < initiativelist.total; i++) { initiative_keylist.push(initiativelist['issues'][i]['key']); }     
   }
-  catch(error){ console.log("Error = ", error); }
+  catch(error){ console.log("Error = ", error); return; }
 
   // 3.Initiative Key List 기반으로 각각의 Initiative Key에 해당하는 상세 정보를 가져와서 DB 구성한다.
   console.log("Key List = ", initiative_keylist);
@@ -921,14 +921,19 @@ async function makeSnapshot_ArchiReviewInfofromJira(init_index, init_keyvalue, e
       if(init_status != 'Deferred' && init_status != 'PROPOSED TO DEFER') // Normal workflow
       {
         let color = 'GREEN';
+        console.log("color1 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
         current_Arch_1st_workflow['Signal'] = 'GREEN';
+        console.log("color2 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
         //if(init_status != 'DRAFTING' && init_status != 'PO REVIEW')
         if(init_status != 'DRAFTING' && init_status != 'PO REVIEW' && init_status != 'ELT REVIEW')
         {
           // RED case
           if(labelstring.includes("1st_reviewed") == false) { color = 'RED'; }
+          console.log("color3 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
           if(init_status == "In Progress" && (arch_epicstatus == 'Scoping'/* || arch_epicstatus == 'Review'*/)) { color = 'RED'; }
+          console.log("color4 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
           if((init_status == "Delivered" || init_status == "Closed") && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'RED'; }
+          console.log("color5 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
           /*
           let target = initparse.conversionSprintToDate(init_ReleaseSP);
           target = moment(target).add(9, 'Hour');
@@ -943,11 +948,15 @@ async function makeSnapshot_ArchiReviewInfofromJira(init_index, init_keyvalue, e
           if(labelstring.includes("단기과제")) { deadline_min = 14, deadline_max = 21; }
           let diff = initparse.getRemainDays(target, today);
           if(diff <= deadline_min && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'RED'; }
+          console.log("color6 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
           if((diff > deadline_min && diff <= deadline_max) && (arch_epicstatus != 'Delivered' && arch_epicstatus != 'Closed')) { color = 'YELLOW'; }
+          console.log("color7 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
 
           if(labelstring.includes("일정사전합의")) { color = 'YELLOW'; }
+          console.log("color8 = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
         }
         current_Arch_1st_workflow['Signal'] = color;
+        console.log("color final = ", color, " current_Arch_1st_workflow['Signal'] = ", current_Arch_1st_workflow['Signal']);
       }
       current_Arch_1st_workflow = initparse.parseArchEpicWorkflow(epicinfo['issues'][0]['changelog'], current_Arch_1st_workflow);
       current_Arch_Review['First Review']['workflow'] = current_Arch_1st_workflow;
