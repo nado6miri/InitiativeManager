@@ -6,6 +6,7 @@ https://velopert.com/tag/mongodb
 2. client설치 : mongo  => sudo apt install mongodb-clients
 3. server실행 : mongod --dbpath /home/sdet/sdetshare/mongo_database/ &
                 mongod --dbpath /home/sdet/sdetshare/mongo_database/ & --auth 
+                mongod --dbpath /media/sdet/3dd31023-a774-4f18-a813-0789b15061db/MongoDB --auth &
                 mongod --dbpath /home/sdet/sdetshare/mongo_database/ --auth --port 30301 --bind_ip *.*.*.* &
                 sudo service mongodb start  
                 sudo service mongodb stop
