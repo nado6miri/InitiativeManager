@@ -58,7 +58,10 @@ router.get('/:id', function(req, res, next) {
 
   if(filename !== null)
   {
-    fs.readFile(__dirname + "/../../public/json/" + filename, (err, data) => { // 파일 읽는 메소드
+      // docker이용해서 db 생성시 경로
+      fs.readFile("/media/sdet/3dd31023-a774-4f18-a813-0789b15061db/latest_json/" + filename, (err, data) => { // 파일 읽는 메소드
+      // local app 이용해서 db 생성시 경로
+      //fs.readFile(__dirname + "/../../public/json/" + filename, (err, data) => { // 파일 읽는 메소드
         if (err) {
           res.send({"err msg" : "Can't find raw data = " + filename}); // 브라우저로 전송   
           return console.error(err); // 에러 발생시 에러 기록하고 종료

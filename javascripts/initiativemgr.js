@@ -615,6 +615,9 @@ async function makeSnapshot_InitiativeListfromJira(querymode, filterID, withChgl
     case 48233 :
       foldername = "webOS50_Platform_filter_" + String(filterID);
       break;
+    case 62724 :
+      foldername = "webOS50_MR_filter_" + String(filterID);
+      break;
     default :
       foldername = "";
       break;

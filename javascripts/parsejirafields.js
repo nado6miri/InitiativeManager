@@ -62,6 +62,55 @@ const HE_SP_Schedule =
     { 'IR' : 'IR2', 'SPRINT_SHORT' : '2019_SP24', 'start' : '2019-07-22', 'end' : '2019-08-04' },
     { 'IR' : 'IR2', 'SPRINT_SHORT' : '2019_SP25', 'start' : '2019-08-05', 'end' : '2019-08-18' },
     { 'IR' : 'IR2', 'SPRINT_SHORT' : '2019_SP26', 'start' : '2019-08-19', 'end' : '2019-09-01' },
+
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP27', 'start' : '2019-09-02', 'end' : '2019-09-15' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP28', 'start' : '2019-09-16', 'end' : '2019-09-29' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP29', 'start' : '2019-09-30', 'end' : '2019-10-13' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP30', 'start' : '2019-10-14', 'end' : '2019-10-27' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP31', 'start' : '2019-10-28', 'end' : '2019-11-10' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP32', 'start' : '2019-11-11', 'end' : '2019-11-24' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP33', 'start' : '2019-11-25', 'end' : '2019-12-08' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP34', 'start' : '2019-12-09', 'end' : '2019-12-22' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2019_SP35', 'start' : '2019-12-23', 'end' : '2020-01-05' },
+
+    // 2020
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP01', 'start' : '2019-09-02', 'end' : '2019-09-15' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP02', 'start' : '2019-09-16', 'end' : '2019-09-29' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP03', 'start' : '2019-09-30', 'end' : '2019-10-13' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP04', 'start' : '2019-10-14', 'end' : '2019-10-27' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP05', 'start' : '2019-10-28', 'end' : '2019-11-10' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP06', 'start' : '2019-11-11', 'end' : '2019-11-24' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP07', 'start' : '2019-11-25', 'end' : '2019-12-08' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP08', 'start' : '2019-12-09', 'end' : '2019-12-22' },
+    { 'IR' : 'IR1', 'SPRINT_SHORT' : '2020_SP09', 'start' : '2019-12-23', 'end' : '2020-01-05' },
+
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP10', 'start' : '2020-01-06', 'end' : '2020-01-19' },
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP11', 'start' : '2020-01-20', 'end' : '2020-02-02' },
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP12', 'start' : '2020-02-03', 'end' : '2020-02-16' },
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP13', 'start' : '2020-02-17', 'end' : '2020-03-01' },
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP14', 'start' : '2020-03-02', 'end' : '2020-03-15' },
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP15', 'start' : '2020-03-16', 'end' : '2020-03-29' },
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP16', 'start' : '2020-03-30', 'end' : '2020-04-12' },
+    { 'IR' : 'IR2', 'SPRINT_SHORT' : '2020_SP17', 'start' : '2020-04-13', 'end' : '2020-04-26' },
+
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP18', 'start' : '2020-04-27', 'end' : '2020-05-10' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP19', 'start' : '2020-05-11', 'end' : '2020-05-24' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP20', 'start' : '2020-05-25', 'end' : '2020-06-07' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP21', 'start' : '2020-06-08', 'end' : '2020-06-21' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP22', 'start' : '2020-06-22', 'end' : '2020-07-05' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP23', 'start' : '2020-07-06', 'end' : '2020-07-19' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP24', 'start' : '2020-07-20', 'end' : '2020-08-09' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP25', 'start' : '2020-08-10', 'end' : '2020-08-23' },
+    { 'IR' : 'IR3', 'SPRINT_SHORT' : '2020_SP26', 'start' : '2020-08-24', 'end' : '2020-09-06' },
+
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP27', 'start' : '2020-09-07', 'end' : '2020-09-20' },
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP28', 'start' : '2020-09-21', 'end' : '2020-10-11' },
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP29', 'start' : '2020-10-12', 'end' : '2020-10-25' },
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP30', 'start' : '2020-10-26', 'end' : '2020-11-08' },
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP31', 'start' : '2020-11-09', 'end' : '2020-11-22' },
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP32', 'start' : '2020-11-23', 'end' : '2020-12-06' },
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP33', 'start' : '2020-12-07', 'end' : '2020-12-20' },
+    { 'IR' : 'IR4', 'SPRINT_SHORT' : '2020_SP34', 'start' : '2020-12-21', 'end' : '2021-01-01' },
 ];
 
 
@@ -278,6 +327,7 @@ function conversionSprintToDate(SPRINT)
 // convert ReleaseSprint to ShortSprint
 // [param] duedate : "2019_IR1SP01(3/XX~5/10)"
 // [return] Sprint str
+// refactoring 필요함... 귀찮아...
 //===========================================================================
 function conversionReleaseSprintToSprint(ReleaseSprint) 
 {
@@ -300,6 +350,36 @@ function conversionReleaseSprintToSprint(ReleaseSprint)
         let a = sprint.replace('2019_IR2', '');
         a = a.split('(');
         result = "2019_" + a[0];
+        return result;
+    }
+    if(sprint.includes("2019_IR3"))
+    {
+        let a = sprint.replace('2019_IR3', '');
+        a = a.split('(');
+        result = "2019_" + a[0];
+        return result;
+    }
+
+    // webOS5.5 Sprint
+    if(sprint.includes("2020_IR1"))
+    {
+        let a = sprint.replace('2020_IR1', '');
+        a = a.split('(');
+        result = "2020_" + a[0];
+        return result;
+    }
+    if(sprint.includes("2020_IR2"))
+    {
+        let a = sprint.replace('2020_IR2', '');
+        a = a.split('(');
+        result = "2020_" + a[0];
+        return result;
+    }
+    if(sprint.includes("2020_IR3"))
+    {
+        let a = sprint.replace('2020_IR3', '');
+        a = a.split('(');
+        result = "2020_" + a[0];
         return result;
     }
     

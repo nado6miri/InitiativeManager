@@ -38,14 +38,28 @@ RUN mkdir -p /workspace/InitiativeManager/public/json
 RUN mkdir -p /media/sdet/3dd31023-a774-4f18-a813-0789b15061db
 RUN npm install
 #EXPOSE 4000
-COPY ./configuration.js /workspace/InitiativeManager/javascripts/
+COPY ./javascripts/configuration.js /workspace/InitiativeManager/javascripts/
 
 CMD cd /workspace/InitiativeManager
 CMD git pull
 #CMD npm start
 
 
+#[Docker image Build]
 #sudo docker build -t initiativemgr:latest ./
+
+#[registry deamon실행]
+#sudo docker run --name registry -v ~/dockerimages:/var/lib/registry -dit -p 5000:5000 registry
+
+#[Docker Image tagging]
+#sudo docker tag initiativemgr:latest localhost:5000/initiativemgr:latest (docker hub 사용시 localhost/ 대신 계정 id를 적는다.)
+#sudo docker push localhost/initiativemgr:latest
+#저장된 image확인 : Curl -X GET http://localhost:5000/v2/_catalog
+#Tag정보 확인 :curl -X GET http://localhost:5000/v2/initiativemgr/tags/list
+
+#[Image 다운받기]
+#sudo docker pull localhost:5000/initiativemgr:latest
+
 #[web Service Run]
 #sudo docker run -it --name initmgr -p 4000:4000 -w /workspace/InitiativeManager -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db/latest_json:/workspace/InitiativeManager/public/json -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db:/media/sdet/3dd31023-a774-4f18-a813-0789b15061db initiativemgr:latest bash -c "npm start"
 
@@ -83,3 +97,34 @@ CMD git pull
 #    }
 #}
 
+
+
+#[jenkins]
+#pipeline {
+#    environment {
+#        SERVICE_NAME = 'Initiative Manager V3.00'
+#    }
+#    
+#    agent {
+#        docker {
+#            image 'initiativemgr:latest'
+#            args  '-w /workspace/InitiativeManager -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db/latest_json:/workspace/InitiativeManager/public/json -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db:/media/sdet/3dd31023-a774-4f18-a813-0789b15061db'
+#        }
+#    }
+#    
+#   options {
+#       timeout(time: 2, unit: 'HOURS') 
+#   } 
+#    
+#   stages {
+#       stage('Update_Initiative_webOS5.0_Initial') {
+#           environment {
+#               STAGE_ENV_VARS = 'STAGE_ENV_VARS'
+#           }
+#           steps {
+#               echo "Update_Initiative_webOS5.0_Initial"
+#               sh 'cd /workspace/InitiativeManager && node update.js webOS5.0_Initial'
+#           }
+#       }
+#   }
+#}
