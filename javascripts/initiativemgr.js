@@ -30,11 +30,6 @@ var initiative_DB = {
   'developers' : { },
 };  
 
-var current_demo_info = {
-  'key' : '',
-  'summary' : '',
-  'praize' : false,
-};
 
 var story_point = 
 {
@@ -112,7 +107,13 @@ var initiative_info =
   'SDET_STE_Members' : [],
   'AbnormalSprint' : '',
   "GovOrDeployment" : '',
-  'Demo' : [],
+  'Demo' : {
+      'Demo Key' : '',
+      'DemoTotalCnt' : 0,
+      'DemoDoneCnt' : 0,
+      'DemoDelayedCnt' : 0,
+      'issues' : [],
+  },
   'StoryPoint' : { },
   'FixVersion' : [ ],
   'Workflow' : { }, 
@@ -796,8 +797,19 @@ async function makeSnapshot_EpicDetailInfofromJira(init_keyvalue, init_index)
       if(current_epic_info['GovOrDeployment'] == true) { current_epic_info['AbnormalSprint'] = false; }    
       else { current_epic_info['AbnormalSprint'] = initparse.checkAbnormalSP(init_ReleaseSP, init_Status, epic_ReleaseSP, epic_Status); }
       current_epic_info['Labels'] = initparse.getLabels(issue);     
-      current_epic_info['SDET_NeedtoCheck'] = !initparse.checkLabels(issue, 'SDET_CHECKED'); // SDET_CHECKED label이 없을 경우 True...
-      current_epic_info['SDET_NeedDevelTC'] = initparse.checkLabels(issue, '개발TC필요');
+
+      let compstr = initparse.getComponents(issue);
+      if(compstr.includes("_Sprintdemo") == true)
+      {
+        current_epic_info['SDET_NeedtoCheck'] = false;
+        current_epic_info['SDET_NeedDevelTC'] = false;
+        current_epic_info['Labels'].push("_Sprintdemo");
+      }
+      else
+      {
+        current_epic_info['SDET_NeedtoCheck'] = !initparse.checkLabels(issue, 'SDET_CHECKED'); // SDET_CHECKED label이 없을 경우 True...
+        current_epic_info['SDET_NeedDevelTC'] = initparse.checkLabels(issue, '개발TC필요');
+      }
 
       // Archi Review
       if(current_epic_info['Summary'].includes("ARCH REVIEW") && initiative_DB['issues'][init_index]['ScopeOfChange'] != 'N/A')
@@ -1090,9 +1102,20 @@ async function makeSnapshot_StoryInfofromJira(init_index, epickeylist)
         current_story_info['GovOrDeployment'] = initparse.checkGovDeployComponents(issue);        
         current_story_info['AbnormalSprint'] = initparse.checkAbnormalSP(init_ReleaseSP, init_Status, story_ReleaseSP, story_Status); 
         current_story_info['Labels'] = initparse.getLabels(issue);     
-        current_story_info['SDET_NeedtoCheck'] = !initparse.checkLabels(issue, 'SDET_CHECKED');
-        current_story_info['SDET_NeedDevelTC'] = initparse.checkLabels(issue, '개발TC필요');
 
+        let compstr = initiative_DB['issues'][init_index]['EPIC']['issues'][i]['Labels'];
+        if(compstr.includes("_Sprintdemo") == true)
+        {
+          current_story_info['SDET_NeedtoCheck'] = false;
+          current_story_info['SDET_NeedDevelTC'] = true;
+          current_story_info['Labels'].push("_Sprintdemo");
+        }
+        else
+        {
+          current_story_info['SDET_NeedtoCheck'] = !initparse.checkLabels(issue, 'SDET_CHECKED');
+          current_story_info['SDET_NeedDevelTC'] = initparse.checkLabels(issue, '개발TC필요');
+        }
+  
         current_story_info['StoryPoint'] = 0; // need to be updated     
         /*  
         current_story_info['Zephyr'] = 0; // need to be updated      
@@ -1782,6 +1805,54 @@ async function makeZephyrStatics()
             if(storyz_assignee != null && sz_final_status == '1') { storyz_devel[storyz_assignee]['PassStoryCnt']++; }
           }
         }       
+      }
+    }
+
+    for(var j = 0; j < epic.length; j++)
+    {
+      if(epic[j]['Labels'].includes("_Sprintdemo") == true)
+      {
+        initiative_DB['issues'][i]['Demo']['Demo Key'] = epic[j]['Epic Key'];
+        initiative_DB['issues'][i]['Demo']['DemoTotalCnt'] = epic[j]['STORY']['STORY_SUMMARY']['StoryTotalCnt'];
+        initiative_DB['issues'][i]['Demo']['DemoDoneCnt'] = epic[j]['STORY']['STORY_SUMMARY']['StoryTotalResolutionCnt'];
+        initiative_DB['issues'][i]['Demo']['DemoDelayedCnt'] = epic[j]['STORY']['STORY_SUMMARY']['StoryDelayedCnt'];
+        initiative_DB['issues'][i]['Demo']['issues'] = JSON.parse(JSON.stringify(epic[j]['STORY']['issues']));
+
+        // pass / fail / na 식별
+        // sprint demo 단위 pass rate 계산
+        let story = initiative_DB['issues'][i]['EPIC']['issues'][j]['STORY']['issues'];
+        for(var k = 0; k < story.length; k++)
+        {
+          initiative_DB['issues'][i]['Demo']['issues'][k]['Zephyr']['PsssStoryCnt'] = 0;
+          initiative_DB['issues'][i]['Demo']['issues'][k]['Zephyr']['FailStoryCnt'] = 0;
+          initiative_DB['issues'][i]['Demo']['issues'][k]['Zephyr']['NEStoryCnt'] = 0;
+
+          let story_zephyr = initiative_DB['issues'][i]['EPIC']['issues'][j]['STORY']['issues'][k]['Zephyr']['ZephyrTC'];
+          for(var l = 0; l < story_zephyr.length; l++)
+          {
+            // [STORY ZEPHYR EXECUTION LOOP]
+            let sz_last_time = 0, sz_final_status = "3";
+            console.log("[DZ] i = ", i, " j = ", j, " k = ", k, " l = ", l);
+            for(var m = 0; m < story_zephyr[l]['Executions'].length; m++)
+            {
+              let status = story_zephyr[l]['Executions'][m]['executionStatus'];
+              // check the result of last test status.
+              if(status == "1" || status == "2") 
+              {
+                let sz_cur_time = story_zephyr[l]['Executions'][m]['executedOn'];
+                sz_cur_time = sz_cur_time.replace('/', '-'), sz_cur_time = sz_cur_time.replace('/', '-');
+                sz_cur_time = sz_cur_time.replace(' ', 'T');
+                sz_cur_time = new Date(sz_cur_time);
+                //console.log("[NSB] executedOn = ", story_zephyr[l]['Executions'][m]['executedOn'], "sz_cur_time = ", sz_cur_time, "sz_last_time = ", sz_last_time, "(sz_cur_time - sz_last_time > 0) = ", (sz_cur_time - sz_last_time > 0));
+                //console.log("[SZ-Exec] i = ", i, " j = ", j, " k = ", k, " l = ", l, " m = ", m, "storyz_assignee = ", storyz_assignee, "storyze_assignee = ", storyze_assignee, "status = ", status, "sz_final_status = ", sz_final_status);    
+                if(sz_last_time == 0 || (sz_cur_time - sz_last_time > 0)) { sz_last_time = sz_cur_time, sz_final_status = status; console.log("Last Exe (m) = ", m); }//'1'; }
+              }
+            }
+            if(sz_final_status == '1') { initiative_DB['issues'][i]['Demo']['issues'][k]['Zephyr']['PsssStoryCnt']++; }
+            else if(sz_final_status == '2') { initiative_DB['issues'][i]['Demo']['issues'][k]['Zephyr']['FailStoryCnt']++; }
+            else { initiative_DB['issues'][i]['Demo']['issues'][k]['Zephyr']['NEStoryCnt']++; }
+          }
+        }
       }
     }
 

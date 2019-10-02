@@ -142,6 +142,7 @@ function get_ChangeLogfromJira(querymode, filtervalue)
 }
 
 
+
 /*
   getEpicListfromJira : Initiative Key를 전달받아 하위에 연결된 Epic List를 얻어 온다.
 */
@@ -185,6 +186,7 @@ function getEpicListfromJira(initiativeKey)
 }  
 
 
+
 /*
   getStoryListfromJira : Epic Key를 전달받아 하위에 연결된 Story List를 얻어 온다.
 */
@@ -209,7 +211,8 @@ function getStoryListfromJira(epicKey)
       }
     }
 
-    let filterjql = '(issuetype = story or issuetype = task) AND issuefunction in linkedissuesOf(\"key=' + epicKey + '\"' + ')';
+    //let filterjql = '(issuetype = story or issuetype = task) AND issuefunction in linkedissuesOf(\"key=' + epicKey + '\"' + ')';
+    let filterjql = '(issuetype = story or issuetype = task or issuetype = "Initiative Demo") AND issuefunction in linkedissuesOf(\"key=' + epicKey + '\"' + ')';
     //let filterjql = 'issuefunction in linkedissuesOf(\"key=' + epicKey + '\"' + ')';
     console.log("filterjql = ", filterjql);
     var searchURL = 'http://hlm.lge.com/issue/rest/api/2/search/';

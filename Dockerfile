@@ -29,6 +29,8 @@ RUN apt-get install -y git
 #RUN apt-get install -y mongodb-org
 
 RUN mkdir -p /data/db 
+EXPOSE 3000
+EXPOSE 4000
 
 #7. App download
 RUN mkdir -p /workspace/InitiativeManager
@@ -47,13 +49,14 @@ CMD git pull
 
 #[Docker image Build]
 #sudo docker build -t initiativemgr:latest ./
+#sudo docker build --no-cache -t initiativemgr:latest ./
 
 #[registry deamon실행]
 #sudo docker run --name registry -v ~/dockerimages:/var/lib/registry -dit -p 5000:5000 registry
 
 #[Docker Image tagging]
 #sudo docker tag initiativemgr:latest localhost:5000/initiativemgr:latest (docker hub 사용시 localhost/ 대신 계정 id를 적는다.)
-#sudo docker push localhost/initiativemgr:latest
+#sudo docker push localhost:5000/initiativemgr:latest
 #저장된 image확인 : Curl -X GET http://localhost:5000/v2/_catalog
 #Tag정보 확인 :curl -X GET http://localhost:5000/v2/initiativemgr/tags/list
 
@@ -61,7 +64,7 @@ CMD git pull
 #sudo docker pull localhost:5000/initiativemgr:latest
 
 #[web Service Run]
-#sudo docker run -it --name initmgr -p 4000:4000 -w /workspace/InitiativeManager -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db/latest_json:/workspace/InitiativeManager/public/json -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db:/media/sdet/3dd31023-a774-4f18-a813-0789b15061db initiativemgr:latest bash -c "npm start"
+#sudo docker run -it --name initmgr -p 3000:3000 -w /workspace/InitiativeManager -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db/latest_json:/workspace/InitiativeManager/public/json -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db:/media/sdet/3dd31023-a774-4f18-a813-0789b15061db initiativemgr:latest bash -c "npm start"
 
 #[Execute Update job]
 #1. sudo docker run -it --name initmgr -w /workspace/InitiativeManager -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db/latest_json:/workspace/InitiativeManager/public/json -v /media/sdet/3dd31023-a774-4f18-a813-0789b15061db:/media/sdet/3dd31023-a774-4f18-a813-0789b15061db initiativemgr:latest bash -c "/workspace/InitiativeManager/node update.js params"
